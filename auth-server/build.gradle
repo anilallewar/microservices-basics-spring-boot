@@ -1,5 +1,5 @@
 /*
-* Build file for discovery server
+* Build file for authorization server
 */
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
@@ -10,7 +10,7 @@ apply plugin: 'eclipse'
 buildscript {
 	project.ext {
          springBootVersion = '1.5.3.RELEASE'
-         jarName = 'basic-webservice-registry'
+         jarName = 'basic-auth-server'
          versionName = '0.0.1'
 	}
     repositories {
@@ -30,7 +30,7 @@ task createWrapper(type: Wrapper) {
 
 // Used by the Docker gradle plugin, group refers to the account under which the docker image is created
 group = 'anilallewar'
-mainClassName = 'com.anilallewar.microservices.registry.Application'
+mainClassName = 'com.anilallewar.microservice.auth.Application'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -46,9 +46,21 @@ dependencyManagement {
 }
 
 dependencies {
-	compile('org.springframework.cloud:spring-cloud-starter-config')
-	compile('org.springframework.boot:spring-boot-starter-actuator')
-    compile("org.springframework.cloud:spring-cloud-starter-eureka-server")
+    // Basic Spring boot with config client
+    compile('org.springframework.cloud:spring-cloud-starter-config')
+    compile("org.springframework.boot:spring-boot-starter-web")    
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+    
+    // Spring OAuth2 security
+    compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.security.oauth:spring-security-oauth2")
+    
+    // Eureka client
+    compile('org.springframework.cloud:spring-cloud-starter-eureka')
+    
+    // JPA for persisting user data
+	compile("org.springframework.boot:spring-boot-starter-data-jpa")
+	compile("mysql:mysql-connector-java:5.1.30")
 }
 
 jar {
