@@ -3,6 +3,7 @@ package com.anilallewar.microservice.auth.api;
 import java.security.Principal;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -22,7 +23,8 @@ public class AuthUserController {
 	 * @param user
 	 * @return
 	 */
-	@RequestMapping({ "/user", "/me" })
+	@RequestMapping("/me")
+	@ResponseBody
 	public Principal getCurrentLoggedInUser(Principal user) {
 		return user;
 	}

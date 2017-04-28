@@ -54,6 +54,7 @@ dependencies {
     // Spring OAuth2 security
     compile("org.springframework.boot:spring-boot-starter-security")
     compile("org.springframework.security.oauth:spring-security-oauth2")
+    compile("org.springframework.security:spring-security-jwt")
     
     // Eureka client
     compile('org.springframework.cloud:spring-cloud-starter-eureka')

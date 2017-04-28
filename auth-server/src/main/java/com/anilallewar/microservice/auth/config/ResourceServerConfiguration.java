@@ -3,11 +3,19 @@
  */
 package com.anilallewar.microservice.auth.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
-import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
-import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 /**
  * Since the "me" endpoint needs to be protected to be accessed only after the
@@ -19,49 +27,58 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
  */
 @Configuration
 @EnableResourceServer
-public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
-	
-	/**
-	 * Configure security to allow access to the /me endpoint only if the OAuth
-	 * authorization returns "read" scope.<br>
-	 * <br>
-	 * 
-	 * If you look at
-	 * {@link OAuthConfiguration#configure(org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer)}
-	 * to check that by default the authorization server allows "read" scope
-	 * only.
-	 */
-	@Override 
-    public void configure(HttpSecurity http) throws Exception {
-         // @formatter:off
-         http
-         .requestMatchers().antMatchers("/me")    
-         .and()
-         .authorizeRequests()
-         .antMatchers("/me").access("#oauth2.hasScope('read')");
-      // @formatter:on
+public class ResourceServerConfiguration extends WebMvcConfigurerAdapter {
+
+	@Bean
+    public ViewResolver getViewResolver() {
+        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+        resolver.setSuffix(".html");
+        return resolver;
     }
 
-	/**
-	 * Id of the resource that you are letting the client have access to.
-	 * Supposing you have another api ("say api2"), then you can customize the
-	 * access within resource server to define what api is for what resource id.
-	 * <br>
-	 * <br>
-	 * 
-	 * So suppose you have 2 APIs, then you can define 2 resource servers.
-	 * <ol>
-	 * <li>Client 1 has been configured for access to resourceid1, so he can
-	 * only access "api1" if the resource server configures the resourceid to
-	 * "api1".</li>
-	 * <li>Client 1 can't access resource server 2 since it has configured the
-	 * resource id to "api2"
-	 * </li>
-	 * </ol>
-	 * 
-	 */
-    @Override
-    public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-         resources.resourceId("apis");
-    }
+	@Override
+	public void addViewControllers(ViewControllerRegistry registry) {
+		registry.addViewController("/login").setViewName("login");
+		registry.addViewController("/oauth/confirm_access").setViewName("authorize");
+	}
+	
+	@Configuration
+	@Order(-20)
+	protected static class LoginConfig extends WebSecurityConfigurerAdapter {
+
+		@Autowired
+		private AuthenticationManager authenticationManager;
+
+		/**
+		 * Configure security to allow access to the /me endpoint only if the OAuth
+		 * authorization returns "read" scope.<br>
+		 * <br>
+		 * 
+		 * If you look at
+		 * {@link OAuthConfiguration#configure(org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer)}
+		 * to check that by default the authorization server allows "read" scope
+		 * only.
+		 */
+		@Override
+		protected void configure(HttpSecurity http) throws Exception {
+			// @formatter:off
+			http
+				.formLogin().loginPage("/login").permitAll()
+			.and()
+				.requestMatchers().antMatchers("/login", "/oauth/authorize", "/oauth/confirm_access")
+			.and()
+				.requestMatchers().antMatchers("/me")
+			.and()
+				.authorizeRequests()
+				.antMatchers("/login").permitAll()
+				.anyRequest().authenticated()
+				.antMatchers("/me").access("#oauth2.hasScope('read')");
+			// @formatter:on
+		}
+
+		@Override
+		protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+			auth.parentAuthenticationManager(authenticationManager);
+		}
+	}
 }

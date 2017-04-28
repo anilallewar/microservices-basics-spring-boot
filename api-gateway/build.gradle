@@ -1,0 +1,100 @@
+/*
+* Build file for API-Gateway
+*/
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'application'
+apply plugin: 'docker'
+apply plugin: 'eclipse'
+
+buildscript {
+	project.ext {
+         springBootVersion = '1.5.3.RELEASE'
+         jarName = 'basic-api-gateway'
+         versionName = '0.0.1'
+	}
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${project.springBootVersion}"
+        classpath "se.transmode.gradle:gradle-docker:1.2"
+    }
+}
+
+task createWrapper(type: Wrapper) {
+    gradleVersion = '3.5'
+}
+
+/**
+* These values(group & mainClassName) are required by the gradle docker plugin.
+*
+* The "group" value feeds into the docker tag and is required if you want to push the images
+* to docker hub.
+*
+* The "mainClassName" value tells which class has the "main" entry point for running the 
+* Spring boot application.
+*/
+
+group = 'anilallewar'
+mainClassName = 'com.anilallewar.microservice.gateway.Application'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencyManagement {
+  imports {
+    mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Dalston.RELEASE'
+    mavenBom 'org.springframework.security:spring-security-bom:4.2.2.RELEASE'
+  }
+}
+
+dependencies {
+    // Basic Spring boot with config client
+    compile('org.springframework.cloud:spring-cloud-starter-config')
+    compile("org.springframework.boot:spring-boot-starter-web")    
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile("org.springframework.cloud:spring-cloud-starter-zuul")
+    
+    // Spring OAuth2 security
+    compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.security.oauth:spring-security-oauth2")
+    compile("org.springframework.security:spring-security-jwt")
+    
+    // Eureka client
+    compile('org.springframework.cloud:spring-cloud-starter-eureka')
+}
+
+jar {
+    baseName = "${project.jarName}"
+    version =  "${project.versionName}"
+}
+
+/*
+* This task builds the docker image by copying the output of the "jar" gradle command
+* and moving it to the "build/docker" directory which is used as the staging directory 
+* by the docker gradle plugin. We then build the docker image by invoking the appropriate
+* Dockerfile.  
+*/
+task buildDocker(type: Docker, dependsOn: build) {
+  push = false
+  applicationName = jar.baseName
+  tagVersion = jar.version
+  dockerfile = file('src/main/docker/Dockerfile')
+  doFirst {
+    copy {
+      from jar
+      into stageDir
+    }
+  }
+}
+
+run {
+    jvmArgs = ['-Xdebug', '-Xrunjdwp:server=y,transport=dt_socket,address=4300,suspend=n','-Dspring.profiles.active=default']
+}

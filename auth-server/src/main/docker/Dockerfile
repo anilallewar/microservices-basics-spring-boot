@@ -15,6 +15,6 @@ ADD ${APP_JAR_NAME}-${APP_JAR_VERSION}.jar /app/
 
 WORKDIR /app
 
-EXPOSE 8888
+EXPOSE 8899
 
-ENTRYPOINT java -Djava.security.egd=file:/dev/urandom -jar ${APP_JAR_NAME}-${APP_JAR_VERSION}.jar
+ENTRYPOINT java -Djava.security.egd=file:/dev/urandom -Dspring.profiles.active=docker -jar ${APP_JAR_NAME}-${APP_JAR_VERSION}.jar
