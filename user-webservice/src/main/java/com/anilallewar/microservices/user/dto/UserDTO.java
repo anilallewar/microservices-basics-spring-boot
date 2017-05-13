@@ -1,28 +1,18 @@
-/**
- * 
- */
 package com.anilallewar.microservices.user.dto;
 
-
-/**
- * Represents User identified by username
- *
- * @author rohitghatol
- */
 public class UserDTO {
-
 	/** The first name. */
 	private String firstName;
-	
+
 	/** The last name. */
 	private String lastName;
-	
+
 	/** The user name. */
 	private String userName;
-	
+
 	/** The email address. */
 	private String emailAddress;
-	
+
 	/**
 	 * Instantiates a new user dto.
 	 */
@@ -30,24 +20,27 @@ public class UserDTO {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	/**
 	 * Instantiates a new user dto.
 	 *
-	 * @param firstName the first name
-	 * @param lastName the last name
-	 * @param userName the user name
-	 * @param emailAddress the email address
+	 * @param firstName
+	 *            the first name
+	 * @param lastName
+	 *            the last name
+	 * @param userName
+	 *            the user name
+	 * @param emailAddress
+	 *            the email address
 	 */
-	public UserDTO(String firstName, String lastName, String userName,
-			String emailAddress) {
+	public UserDTO(String firstName, String lastName, String userName, String emailAddress) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.userName = userName;
 		this.emailAddress = emailAddress;
 	}
-	
+
 	/**
 	 * Gets the first name.
 	 *
@@ -56,16 +49,17 @@ public class UserDTO {
 	public String getFirstName() {
 		return firstName;
 	}
-	
+
 	/**
 	 * Sets the first name.
 	 *
-	 * @param firstName the new first name
+	 * @param firstName
+	 *            the new first name
 	 */
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-	
+
 	/**
 	 * Gets the last name.
 	 *
@@ -74,16 +68,17 @@ public class UserDTO {
 	public String getLastName() {
 		return lastName;
 	}
-	
+
 	/**
 	 * Sets the last name.
 	 *
-	 * @param lastName the new last name
+	 * @param lastName
+	 *            the new last name
 	 */
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	
+
 	/**
 	 * Gets the user name.
 	 *
@@ -92,16 +87,17 @@ public class UserDTO {
 	public String getUserName() {
 		return userName;
 	}
-	
+
 	/**
 	 * Sets the user name.
 	 *
-	 * @param userName the new user name
+	 * @param userName
+	 *            the new user name
 	 */
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	
+
 	/**
 	 * Gets the email address.
 	 *
@@ -110,35 +106,36 @@ public class UserDTO {
 	public String getEmailAddress() {
 		return emailAddress;
 	}
-	
+
 	/**
 	 * Sets the email address.
 	 *
-	 * @param emailAddress the new email address
+	 * @param emailAddress
+	 *            the new email address
 	 */
 	public void setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((emailAddress == null) ? 0 : emailAddress.hashCode());
-		result = prime * result
-				+ ((firstName == null) ? 0 : firstName.hashCode());
-		result = prime * result
-				+ ((lastName == null) ? 0 : lastName.hashCode());
-		result = prime * result
-				+ ((userName == null) ? 0 : userName.hashCode());
+		result = prime * result + ((emailAddress == null) ? 0 : emailAddress.hashCode());
+		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
+		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
+		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
 		return result;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -172,16 +169,15 @@ public class UserDTO {
 			return false;
 		return true;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "UserDTO [firstName=" + firstName + ", lastName=" + lastName
-				+ ", userName=" + userName + ", emailAddress=" + emailAddress
-				+ "]";
+		return "UserDTO [firstName=" + firstName + ", lastName=" + lastName + ", userName=" + userName
+				+ ", emailAddress=" + emailAddress + "]";
 	}
-	
-	
 }

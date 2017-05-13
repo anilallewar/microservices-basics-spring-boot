@@ -12,6 +12,7 @@ buildscript {
          springBootVersion = '1.5.3.RELEASE'
          jarName = 'basic-config-server'
          versionName = '0.0.1'
+         gradleDockerVersion = '1.2'
 	}
     repositories {
         jcenter()
@@ -20,7 +21,7 @@ buildscript {
     
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${project.springBootVersion}"
-        classpath "se.transmode.gradle:gradle-docker:1.2"
+        classpath "se.transmode.gradle:gradle-docker:${project.gradleDockerVersion}"
     }
 }
 
@@ -30,7 +31,7 @@ task createWrapper(type: Wrapper) {
 
 // Used by the Docker gradle plugin, group refers to the account under which the docker image is created
 group = 'anilallewar'
-mainClassName = 'com.anilallewar.microservices.config.Application'
+mainClassName = 'com.anilallewar.microservices.config.ConfigApplication'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 

@@ -3,7 +3,7 @@ package com.anilallewar.microservices.task.apis;
 import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.oauth2.client.OAuth2RestOperations;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +27,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 public class CommentsService {
 
 	@Autowired
-	private OAuth2RestOperations restTemplate;
+	private OAuth2RestTemplate restTemplate;
 
 	/**
 	 * Returns the comments for the task; note that this applies a circuit
@@ -68,7 +68,7 @@ public class CommentsService {
 			@HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "1000") })
 	public CommentCollectionResource getCommentsForTask(String taskId) {
 		// Get the comments for this task
-		return restTemplate.getForObject(String.format("http://comments-webservice/comments/%s", taskId),
+		return restTemplate.getForObject(String.format("http://comments-webservice/comments-service/comments/%s", taskId),
 				CommentCollectionResource.class);
 
 	}

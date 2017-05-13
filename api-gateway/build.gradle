@@ -12,6 +12,7 @@ buildscript {
          springBootVersion = '1.5.3.RELEASE'
          jarName = 'basic-api-gateway'
          versionName = '0.0.1'
+         gradleDockerVersion = '1.2'
 	}
     repositories {
         jcenter()
@@ -20,7 +21,7 @@ buildscript {
     
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${project.springBootVersion}"
-        classpath "se.transmode.gradle:gradle-docker:1.2"
+        classpath "se.transmode.gradle:gradle-docker:${project.gradleDockerVersion}"
     }
 }
 
@@ -39,7 +40,7 @@ task createWrapper(type: Wrapper) {
 */
 
 group = 'anilallewar'
-mainClassName = 'com.anilallewar.microservice.gateway.Application'
+mainClassName = 'com.anilallewar.microservices.gateway.GatewayApplication'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -65,6 +66,7 @@ dependencies {
     // Spring OAuth2 security
     compile("org.springframework.boot:spring-boot-starter-security")
     compile("org.springframework.security.oauth:spring-security-oauth2")
+    compile("org.springframework.cloud:spring-cloud-starter-oauth2")
     compile("org.springframework.security:spring-security-jwt")
     
     // Eureka client

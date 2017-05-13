@@ -12,6 +12,7 @@ buildscript {
          springBootVersion = '1.5.3.RELEASE'
          jarName = 'basic-web-portal'
          versionName = '0.0.1'
+         gradleDockerVersion = '1.2'
 	}
     repositories {
         jcenter()
@@ -20,7 +21,7 @@ buildscript {
     
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${project.springBootVersion}"
-        classpath "se.transmode.gradle:gradle-docker:1.2"
+        classpath "se.transmode.gradle:gradle-docker:${project.gradleDockerVersion}"
     }
 }
 
@@ -39,7 +40,7 @@ task createWrapper(type: Wrapper) {
 */
 
 group = 'anilallewar'
-mainClassName = 'com.anilallewar.microservices.portal.Application'
+mainClassName = 'com.anilallewar.microservices.portal.PortalApplication'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -59,6 +60,10 @@ dependencies {
     compile('org.springframework.cloud:spring-cloud-starter-config')
     compile("org.springframework.boot:spring-boot-starter-web")    
     compile("org.springframework.boot:spring-boot-starter-actuator")
+    
+    // Spring OAuth2 security
+    compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.security.oauth:spring-security-oauth2")
     
     // Eureka client
     compile('org.springframework.cloud:spring-cloud-starter-eureka')
