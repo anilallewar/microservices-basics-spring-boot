@@ -10,9 +10,9 @@
 angular.module('oauthApp')
     .factory('dataService', function ($http, $q) {
         // We always use this angular service within the preview context
-        var userApi = '/user-service';
+        var userApi = '/user-service/';
 
-        var taskApi = '/task-service';
+        var taskApi = '/task-service/';
 
         var loggedInUserApi = '/api/loggedinuser/me';
 
