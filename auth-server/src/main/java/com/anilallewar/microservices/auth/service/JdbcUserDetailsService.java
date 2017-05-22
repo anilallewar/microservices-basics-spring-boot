@@ -14,6 +14,7 @@ public class JdbcUserDetailsService implements UserDetailsService {
 	private List<UserDetailsService> uds = new LinkedList<>();
 
 	public JdbcUserDetailsService() {
+		// Default constructor
 	}
 
 	/**
@@ -38,7 +39,6 @@ public class JdbcUserDetailsService implements UserDetailsService {
 				} catch (UsernameNotFoundException ex) {
 					assert ex != null;
 				} catch (Exception ex) {
-					ex.printStackTrace();
 					throw ex;
 				}
 			}
