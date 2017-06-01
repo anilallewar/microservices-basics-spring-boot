@@ -9,6 +9,10 @@ MAINTAINER Anil Allewar <anilallewar@yahoo.co.in>
 ENV APP_JAR_NAME basic-webservice-registry
 ENV APP_JAR_VERSION 0.0.1
 
+# Install curl
+RUN apk --update add curl && \
+	rm -rf /var/cache/apk/*
+	
 RUN mkdir /app
 
 ADD ${APP_JAR_NAME}-${APP_JAR_VERSION}.jar /app/ 

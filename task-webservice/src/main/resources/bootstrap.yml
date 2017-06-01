@@ -16,4 +16,4 @@ spring:
   profiles: docker
   cloud:
      config:
-        uri: http://192.168.59.103:8888
+        uri: http://configserver:8888

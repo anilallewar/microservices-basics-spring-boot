@@ -9,12 +9,16 @@ MAINTAINER Anil Allewar <anilallewar@yahoo.co.in>
 ENV APP_JAR_NAME basic-user-webservice
 ENV APP_JAR_VERSION 0.0.1
 
+# Install curl
+RUN apk --update add curl && \
+	rm -rf /var/cache/apk/*
+	
 RUN mkdir /app
 
 ADD ${APP_JAR_NAME}-${APP_JAR_VERSION}.jar /app/ 
 
 WORKDIR /app
 
-EXPOSE 8081
+EXPOSE 8080
 
 ENTRYPOINT java -Djava.security.egd=file:/dev/urandom -Dspring.profiles.active=docker -jar ${APP_JAR_NAME}-${APP_JAR_VERSION}.jar

@@ -67,6 +67,11 @@ dependencies {
     
     // Eureka client
     compile('org.springframework.cloud:spring-cloud-starter-eureka')
+    
+    // Hsytrix dashboard
+    compile('org.springframework.cloud:spring-cloud-starter-hystrix')
+    compile('org.springframework.cloud:spring-cloud-starter-hystrix-dashboard')
+    compile('org.springframework.cloud:spring-cloud-starter-turbine')
 }
 
 jar {

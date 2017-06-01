@@ -49,16 +49,16 @@ angular.module('oauthApp')
 
             getUserDataByUserName: function (userName) {
                 // Make call to the api to get user details by user name
-                return makeRestCall(userApi + '/' + userName);
+                return makeRestCall(userApi + userName);
             },
 
             getTaskDataByTaskId: function (taskId) {
                 // Make call to theapi to get task details by task id	        
-                return makeRestCall(taskApi + '/' + taskId);
+                return makeRestCall(taskApi + taskId);
             },
 
             getTaskDataByUserName: function (userName) {
-                return makeRestCall(taskApi + '/' + 'usertask' + '/' + userName);
+                return makeRestCall(taskApi + 'usertask' + '/' + userName);
             },
 
             getLoggedInUser: function () {

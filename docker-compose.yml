@@ -1,58 +1,106 @@
-configserver:
-  image: anilallewar/config-server
-  restart: always
+version: '2.1'
+services:
+  mysqldb:
+    image: mysql:latest
+    mem_limit: 1073741824
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-hmysqldb", "-uroot", "-ppassword", "--silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    ports:
+      - "3306/tcp"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: auth
 
-eurekaregistry:
-  image: anilallewar/webservice-registry
-  restart: always
-  ports:
-    - "8761:8761"
-  links:
-    - configserver
-    
-authserver:
-  image: anilallewar/auth-server
-  restart: always
-  ports:
-    - "8899:8899"
-  links:
-    - configserver
-    
-apigateway:
-  image: anilallewar/api-gateway
-  restart: always
-  links:
-    - eurekaregistry
-    - authserver
-    - configserver
+  configserver:
+    image: anilallewar/basic-config-server:0.0.1
+    mem_limit: 1073741824
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-I", "http://configserver:8888"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    ports:
+      - "8888/tcp"
+    depends_on:
+      mysqldb:
+        condition: service_healthy
 
-webportal:
-  image: anilallewar/web-portal
-  restart: always
-  links:
-    - eurekaregistry
-    - configserver
+  eurekaregistry:
+    image: anilallewar/basic-webservice-registry:0.0.1
+    mem_limit: 1073741824
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://eurekaregistry:8761"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    ports:
+      - "8761:8761/tcp"
+    depends_on:
+      configserver:
+        condition: service_healthy
 
-userwebservice:
-  image: anilallewar/user-webservice
-  restart: always
-  links:
-    - eurekaregistry
-    - authserver
-    - configserver
+  authserver:
+    image: anilallewar/basic-auth-server:0.0.1
+    mem_limit: 1073741824
+    restart: unless-stopped
+    ports:
+      - "8899/tcp"
+    depends_on:
+      eurekaregistry:
+        condition: service_healthy
 
-taskwebservice:
-  image: anilallewar/task-webservice
-  restart: always
-  links:
-    - eurekaregistry
-    - authserver
-    - configserver
-    
-commentswebservice:
-  image: anilallewar/comments-webservice
-  restart: always
-  links:
-    - eurekaregistry
-    - authserver
-    - configserver
+  apigateway:
+    image: anilallewar/basic-api-gateway:0.0.1
+    mem_limit: 1073741824
+    restart: unless-stopped
+    ports:
+      - "8765:8765/tcp"
+    depends_on:
+      eurekaregistry:
+        condition: service_healthy
+
+  webportal:
+    image: anilallewar/basic-web-portal:0.0.1
+    mem_limit: 1073741824
+    restart: unless-stopped
+    ports:
+      - "8080/tcp"
+    depends_on:
+      eurekaregistry:
+        condition: service_healthy
+
+  userwebservice:
+    image: anilallewar/basic-user-webservice:0.0.1
+    mem_limit: 1073741824
+    restart: unless-stopped
+    ports:
+      - "8080/tcp"
+    depends_on:
+      eurekaregistry:
+        condition: service_healthy
+
+  taskwebservice:
+    image: anilallewar/basic-task-webservice:0.0.1
+    mem_limit: 1073741824
+    restart: unless-stopped
+    ports:
+      - "8080/tcp"
+    depends_on:
+      eurekaregistry:
+        condition: service_healthy
+
+  commentswebservice:
+    image: anilallewar/basic-comments-webservice:0.0.1
+    mem_limit: 1073741824
+    restart: unless-stopped
+    ports:
+      - "8080/tcp"
+    depends_on:
+      eurekaregistry:
+        condition: service_healthy
