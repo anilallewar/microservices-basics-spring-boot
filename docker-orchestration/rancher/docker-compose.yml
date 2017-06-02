@@ -1,0 +1,97 @@
+version: '2'
+services:
+  mysqldb:
+    image: mysql:latest
+    mem_limit: 1073741824
+    restart: unless-stopped
+    ports:
+      - "3306/tcp"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: auth
+
+  configserver:
+    image: anilallewar/basic-config-server:0.0.1
+    mem_limit: 1073741824
+    restart: unless-stopped
+    ports:
+      - "8888/tcp"
+    depends_on:
+      - mysqldb
+
+  eurekaregistry:
+    image: anilallewar/basic-webservice-registry:0.0.1
+    mem_limit: 1073741824
+    restart: unless-stopped
+    ports:
+      - "8761:8761/tcp"
+    command:
+      - while ! curl -s http://configserver:8888/health > /dev/null; do echo Waiting for Config Service to start; sleep 1; done; /app/run.sh
+    depends_on:
+      - configserver
+
+  authserver:
+    image: anilallewar/basic-auth-server:0.0.1
+    mem_limit: 1073741824
+    restart: unless-stopped
+    ports:
+      - "8899/tcp"
+    command:
+      - while ! curl -s http://eurekaregistry:8761/health > /dev/null; do echo Waiting for Eureka Registry to start; sleep 1; done; /app/run.sh
+    depends_on:
+      - eurekaregistry
+
+  apigateway:
+    image: anilallewar/basic-api-gateway:0.0.1
+    mem_limit: 1073741824
+    restart: unless-stopped
+    ports:
+      - "8765:8765/tcp"
+    command:
+      - while ! curl -s http://authserver:8899/health > /dev/null; do echo Waiting for OAuth2 Server to start; sleep 1; done; /app/run.sh
+    depends_on:
+      - authserver
+
+  webportal:
+    image: anilallewar/basic-web-portal:0.0.1
+    mem_limit: 1073741824
+    restart: unless-stopped
+    ports:
+      - "8080/tcp"
+    command:
+      - while ! curl -s http://eurekaregistry:8761/health > /dev/null; do echo Waiting for Eureka Registry to start; sleep 1; done; /app/run.sh
+    depends_on:
+      - eurekaregistry
+
+  userwebservice:
+    image: anilallewar/basic-user-webservice:0.0.1
+    mem_limit: 1073741824
+    restart: unless-stopped
+    ports:
+      - "8080/tcp"
+    command:
+      - while ! curl -s http://eurekaregistry:8761/health > /dev/null; do echo Waiting for Eureka Registry to start; sleep 1; done; /app/run.sh
+    depends_on:
+      - eurekaregistry
+
+  taskwebservice:
+    image: anilallewar/basic-task-webservice:0.0.1
+    mem_limit: 1073741824
+    restart: unless-stopped
+    ports:
+      - "8080/tcp"
+    command:
+      - while ! curl -s http://eurekaregistry:8761/health > /dev/null; do echo Waiting for Eureka Registry to start; sleep 1; done; /app/run.sh
+    depends_on:
+      - eurekaregistry
+
+  commentswebservice:
+    image: anilallewar/basic-comments-webservice:0.0.1
+    mem_limit: 1073741824
+    restart: unless-stopped
+    ports:
+      - "8080/tcp"
+    command:
+      - while ! curl -s http://eurekaregistry:8761/health > /dev/null; do echo Waiting for Eureka Registry to start; sleep 1; done; /app/run.sh
+    depends_on:
+      - eurekaregistry

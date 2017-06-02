@@ -9,16 +9,19 @@ MAINTAINER Anil Allewar <anilallewar@yahoo.co.in>
 ENV APP_JAR_NAME basic-api-gateway
 ENV APP_JAR_VERSION 0.0.1
 
-# Install curl
-RUN apk --update add curl && \
+# Install curl and bash for the entry script
+RUN apk --update add curl bash && \
 	rm -rf /var/cache/apk/*
 	
 RUN mkdir /app
 
-ADD ${APP_JAR_NAME}-${APP_JAR_VERSION}.jar /app/ 
+ADD ${APP_JAR_NAME}-${APP_JAR_VERSION}.jar /app/
+ADD run.sh /app/
+RUN chmod +x /app/run.sh 
 
 WORKDIR /app
 
 EXPOSE 8765
 
-ENTRYPOINT java -Djava.security.egd=file:/dev/urandom -Dspring.profiles.active=docker -jar ${APP_JAR_NAME}-${APP_JAR_VERSION}.jar
+ENTRYPOINT ["/bin/bash","-c"]
+CMD ["/app/run.sh"]

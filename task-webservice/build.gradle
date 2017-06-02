@@ -79,8 +79,14 @@ task buildDocker(type: Docker, dependsOn: build) {
   tagVersion = jar.version
   dockerfile = file('src/main/docker/Dockerfile')
   doFirst {
+    // Copy the built fat jar to the Docker plugin staging directory
     copy {
       from jar
+      into stageDir
+    }
+    // Copy the run.sh file to the Docker plugin staging directory
+    copy {
+      from "${project.buildDir}/resources/main/run.sh"
       into stageDir
     }
   }

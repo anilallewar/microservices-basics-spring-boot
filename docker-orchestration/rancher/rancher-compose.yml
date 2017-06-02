@@ -1,0 +1,31 @@
+mysqldb:
+  scale: 1
+  health_check:
+      # Which port to perform the check against
+      port: 3306
+      # Interval is measured in milliseconds
+      interval: 5000
+      initializing_timeout: 20000
+      unhealthy_threshold: 3
+      # Strategy for what to do when unhealthy
+      # In this service, Rancher will recreate any unhealthy containers
+      strategy: none
+      healthy_threshold: 2
+      # Response timeout is measured in milliseconds
+      response_timeout: 2000
+configserver:
+  scale: 1
+eurekaregistry:
+  scale: 1
+authserver:
+  scale: 1
+apigateway:
+  scale: 1
+webportal:
+  scale: 1
+userwebservice:
+  scale: 1
+taskwebservice:
+  scale: 1
+commentswebservice:
+  scale: 1
