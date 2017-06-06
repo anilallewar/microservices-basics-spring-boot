@@ -9,8 +9,8 @@ MAINTAINER Anil Allewar <anilallewar@yahoo.co.in>
 ENV APP_JAR_NAME basic-config-server
 ENV APP_JAR_VERSION 0.0.1
 
-# Install curl
-RUN apk --update add curl bash && \
+# Install curl, bash and mysql-client to check if DB is up
+RUN apk --update add curl bash mysql-client && \
 	rm -rf /var/cache/apk/*
 	
 RUN mkdir /app
