@@ -10,7 +10,7 @@ services:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: auth
     labels:
-      io.rancher.scheduler.affinity:host_label_soft: name=micro
+      io.rancher.scheduler.affinity:host_label_soft: name=av
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
 
   configserver:
@@ -24,7 +24,7 @@ services:
     depends_on:
       - mysqldb
     labels:
-      io.rancher.scheduler.affinity:host_label_soft: name=micro
+      io.rancher.scheduler.affinity:host_label_soft: name=sd
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       io.rancher.container.pull_image: always
 
@@ -39,7 +39,7 @@ services:
     depends_on:
       - configserver
     labels:
-      io.rancher.scheduler.affinity:host_label_soft: name=micro
+      io.rancher.scheduler.affinity:host_label_soft: name=aa
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       io.rancher.container.pull_image: always
 
@@ -54,7 +54,7 @@ services:
     depends_on:
       - eurekaregistry
     labels:
-      io.rancher.scheduler.affinity:host_label_soft: name=micro
+      io.rancher.scheduler.affinity:host_label_soft: name=av
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       io.rancher.container.pull_image: always
 
@@ -69,7 +69,7 @@ services:
     depends_on:
       - authserver
     labels:
-      io.rancher.scheduler.affinity:host_label_soft: name=micro
+      io.rancher.scheduler.affinity:host_label_soft: name=sd
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       io.rancher.container.pull_image: always
 
@@ -83,6 +83,10 @@ services:
       - while ! curl -s http://eurekaregistry:8761/health > /dev/null; do echo Waiting for Eureka Registry to start; sleep 5; done; /app/run.sh
     depends_on:
       - eurekaregistry
+    labels:
+      io.rancher.scheduler.affinity:host_label_soft: name=aa
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.pull_image: always
 
   userwebservice:
     image: anilallewar/basic-user-webservice:0.0.1
@@ -94,6 +98,10 @@ services:
       - while ! curl -s http://eurekaregistry:8761/health > /dev/null; do echo Waiting for Eureka Registry to start; sleep 5; done; /app/run.sh
     depends_on:
       - eurekaregistry
+    labels:
+      io.rancher.scheduler.affinity:host_label_soft: name=av
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.pull_image: always
 
   taskwebservice:
     image: anilallewar/basic-task-webservice:0.0.1
@@ -105,6 +113,10 @@ services:
       - while ! curl -s http://eurekaregistry:8761/health > /dev/null; do echo Waiting for Eureka Registry to start; sleep 5; done; /app/run.sh
     depends_on:
       - eurekaregistry
+    labels:
+      io.rancher.scheduler.affinity:host_label_soft: name=sd
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.pull_image: always
 
   commentswebservice:
     image: anilallewar/basic-comments-webservice:0.0.1
@@ -116,3 +128,7 @@ services:
       - while ! curl -s http://eurekaregistry:8761/health > /dev/null; do echo Waiting for Eureka Registry to start; sleep 5; done; /app/run.sh
     depends_on:
       - eurekaregistry
+    labels:
+      io.rancher.scheduler.affinity:host_label_soft: name=aa
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.pull_image: always
