@@ -3,10 +3,7 @@ package com.anilallewar.microservices.task.apis;
 import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
-import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -70,18 +67,10 @@ public class CommentsService {
 			@HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"),
 			@HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "1000") })
 	public CommentCollectionResource getCommentsForTask(String taskId) {
-		// Since the called method is not forwarded the default tokens
-		// automatically (happens through Zuul on HTTP), we need to manually set
-		// the JWT access token so that the comments-webservice can authorize
-		// the request.
-		String token = ((OAuth2AuthenticationDetails) SecurityContextHolder.getContext().getAuthentication()
-				.getDetails()).getTokenValue();
-		restTemplate.getOAuth2ClientContext().setAccessToken(new DefaultOAuth2AccessToken(token));
 		// Get the comments for this task
 		return restTemplate.getForObject(
 				String.format("http://comments-webservice/comments-service/comments/%s", taskId),
 				CommentCollectionResource.class);
-
 	}
 
 	/**
