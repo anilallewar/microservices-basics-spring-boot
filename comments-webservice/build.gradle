@@ -6,6 +6,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'application'
 apply plugin: 'docker'
 apply plugin: 'eclipse'
+apply plugin: 'spring-cloud-contract'
 
 buildscript {
 	project.ext {
@@ -13,6 +14,7 @@ buildscript {
          jarName = 'basic-comments-webservice'
          versionName = '0.0.1'
          gradleDockerVersion = '1.2'
+         springCloudContractVesrion = '1.1.1.RELEASE'
 	}
     repositories {
         jcenter()
@@ -21,7 +23,12 @@ buildscript {
     
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${project.springBootVersion}"
+        
+        // Gradle docker plugin dependency
         classpath "se.transmode.gradle:gradle-docker:${project.gradleDockerVersion}"
+        
+        // if using Stub Runner (consumer side) only remove this dependency
+        classpath "org.springframework.cloud:spring-cloud-contract-gradle-plugin:${project.springCloudContractVesrion}"
     }
 }
 
@@ -59,6 +66,10 @@ dependencies {
     
     // Eureka client
     compile('org.springframework.cloud:spring-cloud-starter-eureka')
+    
+    // Consumer driven contracts server
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('org.springframework.cloud:spring-cloud-starter-contract-verifier')
 }
 
 jar {
@@ -93,4 +104,8 @@ task buildDocker(type: Docker, dependsOn: build) {
 
 run {
     jvmArgs = ['-Xdebug', '-Xrunjdwp:server=y,transport=dt_socket,address=4300,suspend=n','-Dspring.profiles.active=default']
+}
+
+contracts {
+	packageWithBaseClasses = 'com.anilallewar.microservices.comments.contracts'
 }

@@ -69,7 +69,7 @@ public class TaskController {
 	 */
 	@RequestMapping(value = "/usertask/{userName}", method = RequestMethod.GET, headers = "Accept=application/json")
 	public List<TaskDTO> getTasksByUserName(@PathVariable("userName") String userName) {
-		List<TaskDTO> taskListToReturn = new ArrayList<TaskDTO>();
+		List<TaskDTO> taskListToReturn = new ArrayList<>();
 		for (TaskDTO currentTask : tasks) {
 			if (currentTask.getUserName().equalsIgnoreCase(userName)) {
 				taskListToReturn.add(currentTask);

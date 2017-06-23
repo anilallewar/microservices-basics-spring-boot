@@ -54,7 +54,7 @@ public class CommentsController {
 	 */
 	@RequestMapping(value = "/{taskId}", method = RequestMethod.GET, headers = "Accept=application/json")
 	public List<CommentDTO> getCommentsByTaskId(@PathVariable("taskId") String taskId) {
-		List<CommentDTO> commentListToReturn = new ArrayList<CommentDTO>();
+		List<CommentDTO> commentListToReturn = new ArrayList<>();
 		for (CommentDTO currentComment : comments) {
 			if (currentComment.getTaskId().equalsIgnoreCase(taskId)) {
 				commentListToReturn.add(currentComment);
