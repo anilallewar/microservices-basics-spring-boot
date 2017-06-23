@@ -32,7 +32,7 @@ import org.springframework.security.test.context.support.WithSecurityContextFact
  * so that we can embed an mock access token in the security context.<br>
  * <br>
  * 
- * @author synerzip
+ * @author anilallewar
  *
  */
 public class WithOAuth2MockAccessTokenSecurityContextFactory
@@ -72,7 +72,7 @@ public class WithOAuth2MockAccessTokenSecurityContextFactory
 	 * @return
 	 */
 	private OAuth2Request getOauth2Request(WithMockOAuth2Token withMockOAuth2Token) {
-		String clientId = "acme";
+		String clientId = withMockOAuth2Token.clientId();
 		Map<String, String> requestParameters = Collections.emptyMap();
 		boolean approved = true;
 		String redirectUrl = withMockOAuth2Token.redirectUrl();
@@ -102,7 +102,7 @@ public class WithOAuth2MockAccessTokenSecurityContextFactory
 
 		HashMap<String, String> details = new HashMap<String, String>();
 		details.put("user_name", withMockOAuth2Token.userName());
-		details.put("email", "anil.allewar@synerzip.com");
+		details.put("email", "anilallewar@yahoo.co.in");
 		details.put("name", "Anil Allewar");
 
 		TestingAuthenticationToken token = new TestingAuthenticationToken(userPrincipal, null, authorities);

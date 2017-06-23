@@ -17,7 +17,7 @@ import com.anilallewar.microservices.task.oauth2.config.OAuth2ClientTestConfigur
 import com.anilallewar.microservices.task.oauth2.security.WithMockOAuth2Token;
 
 /**
- * @author synerzip
+ * @author anilallewar
  *
  */
 @RunWith(SpringRunner.class)

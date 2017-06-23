@@ -10,7 +10,7 @@ import org.springframework.security.test.context.support.WithSecurityContext;
 
 /**
  * Annotation to help us setup our own security context
- * @author synerzip
+ * @author anilallewar
  *
  */
 @Retention(RUNTIME)
@@ -32,4 +32,7 @@ public @interface WithMockOAuth2Token {
 	
 	// Default redirect Url
 	String redirectUrl() default "http://localhost:8765";
+	
+	// Default client id
+	String clientId() default "acme";
 }
