@@ -62,9 +62,9 @@ dependencies {
     // Eureka client
     compile('org.springframework.cloud:spring-cloud-starter-eureka')
 	
-	// Spring cloud contract client
-	testCompile("org.springframework.cloud:spring-cloud-starter-contract-stub-runner")
+	// Spring cloud contract client and OAuth2 security tests
 	testCompile("org.springframework.security:spring-security-test")
+	testCompile("org.springframework.cloud:spring-cloud-starter-contract-stub-runner")
 }
 
 jar {

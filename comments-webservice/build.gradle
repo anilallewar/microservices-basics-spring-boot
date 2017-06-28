@@ -7,6 +7,7 @@ apply plugin: 'application'
 apply plugin: 'docker'
 apply plugin: 'eclipse'
 apply plugin: 'spring-cloud-contract'
+apply plugin: 'maven-publish'
 
 buildscript {
 	project.ext {
@@ -106,6 +107,28 @@ run {
     jvmArgs = ['-Xdebug', '-Xrunjdwp:server=y,transport=dt_socket,address=4300,suspend=n','-Dspring.profiles.active=default']
 }
 
+// Setup the package which contains base classes that the spring cloud contract test case would extend
 contracts {
 	packageWithBaseClasses = 'com.anilallewar.microservices.comments.contracts'
+}
+
+clean.doFirst {
+	delete "~/.m2/repository/anilallewar/basic-comments-webservice"
+	delete "~/.m2/repository/anilallewar/basic-comments-webservice-stubs"
+}
+
+// Setup the artifact id with which the stubs jar would be published, the group id comes from the 'group' attribute defined earlier 
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+			artifactId jar.baseName
+			version jar.version
+            from components.java
+        }
+		stubs(MavenPublication) {
+			artifactId "${jar.baseName}-stubs"
+			version jar.version
+			artifact verifierStubsJar
+		}
+    }
 }

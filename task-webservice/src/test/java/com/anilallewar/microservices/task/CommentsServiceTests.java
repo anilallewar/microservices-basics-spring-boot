@@ -8,7 +8,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.cloud.contract.stubrunner.spring.AutoConfigureStubRunner;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.anilallewar.microservices.task.apis.CommentsService;
@@ -22,8 +24,10 @@ import com.anilallewar.microservices.task.oauth2.security.WithMockOAuth2Token;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK, properties = { "spring.cloud.discovery.enabled=false",
-		"spring.cloud.config.enabled=false", "eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka/" })
+		"spring.cloud.config.enabled=false" })
 @Import(OAuth2ClientTestConfiguration.class)
+@AutoConfigureStubRunner(ids={"anilallewar:basic-comments-webservice-stubs:+:stubs:9083"}, workOffline=true)
+@DirtiesContext
 public class CommentsServiceTests {
 
 	@Autowired
