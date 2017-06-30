@@ -69,7 +69,6 @@ dependencies {
     compile('org.springframework.cloud:spring-cloud-starter-eureka')
     
     // Consumer driven contracts server
-    testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('org.springframework.cloud:spring-cloud-starter-contract-verifier')
 }
 

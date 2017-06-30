@@ -67,9 +67,23 @@ public class CommentsService {
 			@HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"),
 			@HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "1000") })
 	public CommentCollectionResource getCommentsForTask(String taskId) {
-		// Get the comments for this task
-		return restTemplate.getForObject(
-				String.format("http://comments-webservice/comments-service/comments/%s", taskId),
+		/**
+		 * We can't use the context root for comments webservice because of
+		 * problems getting Spring cloud contract to work with it.
+		 * 
+		 * If we add context-root, then we cannot mock the server on the
+		 * comments-webservice side and we will have to make calls with
+		 * <code>testMode = 'EXPLICIT'</code> for the producer tests on the
+		 * comments-webservice side. This doesn't work on the
+		 * comments-webservice side since there is no mock OAuth2 token that
+		 * gets injected there.
+		 * 
+		 * We can't introduce an annotation on the generated test class since
+		 * there is NO original test and hence the @WithMockOAuth2Token
+		 * mechanism that we use in the task-webservice project can't be used in
+		 * the comments-webservice project.
+		 */
+		return restTemplate.getForObject(String.format("http://comments-webservice/comments/%s", taskId),
 				CommentCollectionResource.class);
 	}
 

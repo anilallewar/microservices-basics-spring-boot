@@ -24,7 +24,7 @@ import com.anilallewar.microservices.task.oauth2.security.WithMockOAuth2Token;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK, properties = { "spring.cloud.discovery.enabled=false",
-		"spring.cloud.config.enabled=false" })
+		"spring.cloud.config.enabled=false","stubrunner.idsToServiceIds.basic-comments-webservice-stubs=comments-webservice" })
 @Import(OAuth2ClientTestConfiguration.class)
 @AutoConfigureStubRunner(ids={"anilallewar:basic-comments-webservice-stubs:+:stubs:9083"}, workOffline=true)
 @DirtiesContext
@@ -34,6 +34,7 @@ public class CommentsServiceTests {
 	private CommentsService commentsService;
 
 	private static final String TEST_TASK_ID = "task11";
+	private static final String REQUEST_TASK_ID = "task12";
 
 	/**
 	 * @throws java.lang.Exception
@@ -52,7 +53,7 @@ public class CommentsServiceTests {
 	@Test
 	@WithMockOAuth2Token(userName = "dave")
 	public void testGetCommentsForTask() {
-		CommentCollectionResource comments = this.commentsService.getCommentsForTask(TEST_TASK_ID);
+		CommentCollectionResource comments = this.commentsService.getCommentsForTask(REQUEST_TASK_ID);
 
 		Assert.assertEquals(2, comments.getTaskComments().size());
 		Assert.assertTrue(comments.getTaskComments().get(0).getTaskId().equals(TEST_TASK_ID));

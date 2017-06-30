@@ -3,23 +3,23 @@ package contracts.task.comments;
 import org.springframework.cloud.contract.spec.Contract;
 
 Contract.make {
-	name("comments for task")
+	name("comments-for-task")
 	description('''
-		Represents a successful scenario of getting a comments for task
-		```
-		given:
-			comments exists for task 
-		when:
-			when comments requested for task
-		then:
-			send the comments for the task
-        ```
-    ''')
+Represents a successful scenario of getting a comments for task
+```
+given:
+	comments exists for task 
+when:
+	when comments requested for task
+then:
+	send the comments for the task
+```
+''')
 	request {
 		method 'GET'
-		url $(consumer(regex('/comments/[0-9a-zA-z]+')), producer('/comments/task11'))
+		url $(consumer(regex('/comments/([0-9a-zA-z]+)')), producer('/comments/task11'))
 		headers {
-			contentType(applicationJson())
+			accept(applicationJson())
 		}
 	}
 	response {

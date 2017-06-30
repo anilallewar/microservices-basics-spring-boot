@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.jayway.restassured.module.mockmvc.RestAssuredMockMvc;
+
 /**
  * The test runner which in turn leads to the contract tests being executed
  * 
@@ -28,7 +29,7 @@ public class CommentsApplicationTests {
 	public void setUp() throws Exception {
 		RestAssuredMockMvc.webAppContextSetup(context);
 	}
-	
+
 	@Test
 	public void contextLoads() {
 	}
