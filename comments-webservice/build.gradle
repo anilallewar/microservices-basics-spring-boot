@@ -70,6 +70,9 @@ dependencies {
     
     // Consumer driven contracts server
     testCompile('org.springframework.cloud:spring-cloud-starter-contract-verifier')
+	
+	// Zipkin tracing
+	compile('org.springframework.cloud:spring-cloud-starter-sleuth')
 }
 
 jar {

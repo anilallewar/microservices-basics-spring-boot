@@ -65,6 +65,9 @@ dependencies {
 	// Spring cloud contract client and OAuth2 security tests
 	testCompile("org.springframework.security:spring-security-test")
 	testCompile("org.springframework.cloud:spring-cloud-starter-contract-stub-runner")
+	
+	// Zipkin tracing
+	compile('org.springframework.cloud:spring-cloud-starter-sleuth')
 }
 
 jar {

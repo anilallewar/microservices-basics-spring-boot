@@ -2,6 +2,8 @@ package com.anilallewar.microservices.user.api;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +22,9 @@ import com.anilallewar.microservices.user.dto.UserDTO;
 @RestController
 @RequestMapping("/")
 public class UserController {
+
+	private static final Logger LOGGER = Logger.getLogger(UserController.class.getName());
+
 	@Value("${mail.domain ?: google.com}")
 	private String mailDomain;
 
@@ -49,6 +54,9 @@ public class UserController {
 		for (UserDTO currentUser : users) {
 			if (currentUser.getUserName().equalsIgnoreCase(userName)) {
 				userDtoToReturn = currentUser;
+				if (LOGGER.isLoggable(Level.INFO)) {
+					LOGGER.info(String.format("Found matching user: %s", userDtoToReturn.toString()));
+				}
 				break;
 			}
 		}

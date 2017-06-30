@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +29,8 @@ import com.anilallewar.microservices.comments.dtos.CommentDTO;
 @RestController
 @RequestMapping("/comments")
 public class CommentsController {
+
+	private static final Logger LOGGER = Logger.getLogger(CommentsController.class.getName());
 
 	private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -57,6 +61,10 @@ public class CommentsController {
 		List<CommentDTO> commentListToReturn = new ArrayList<>();
 		for (CommentDTO currentComment : comments) {
 			if (currentComment.getTaskId().equalsIgnoreCase(taskId)) {
+				if (LOGGER.isLoggable(Level.INFO)) {
+					LOGGER.info(String.format("Found matching comments for task [%s] with comment [%s]", taskId,
+							currentComment.getComment()));
+				}
 				commentListToReturn.add(currentComment);
 			}
 		}

@@ -59,6 +59,9 @@ dependencies {
     
     // Eureka client
     compile('org.springframework.cloud:spring-cloud-starter-eureka')
+	
+	// Zipkin tracing
+	compile('org.springframework.cloud:spring-cloud-starter-sleuth')
 }
 
 jar {

@@ -1,6 +1,8 @@
 package com.anilallewar.microservices.task.apis;
 
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
@@ -25,6 +27,8 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
  */
 @Service
 public class CommentsService {
+
+	private static final Logger LOGGER = Logger.getLogger(CommentsService.class.getName());
 
 	@Autowired
 	private OAuth2RestTemplate restTemplate;
@@ -83,6 +87,9 @@ public class CommentsService {
 		 * mechanism that we use in the task-webservice project can't be used in
 		 * the comments-webservice project.
 		 */
+		if (LOGGER.isLoggable(Level.INFO)) {
+			LOGGER.info(String.format("Checking comments for taskId [%s]", taskId));
+		}
 		return restTemplate.getForObject(String.format("http://comments-webservice/comments/%s", taskId),
 				CommentCollectionResource.class);
 	}
