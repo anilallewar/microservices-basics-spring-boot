@@ -67,7 +67,7 @@ dependencies {
 	testCompile("org.springframework.cloud:spring-cloud-starter-contract-stub-runner")
 	
 	// Zipkin tracing
-	compile('org.springframework.cloud:spring-cloud-starter-sleuth')
+	compile('org.springframework.cloud:spring-cloud-starter-zipkin')
 }
 
 jar {

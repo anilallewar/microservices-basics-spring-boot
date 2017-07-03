@@ -1,21 +1,18 @@
 /*
-* Build file for Comments-webservice
+* Build file for Zipkin server that is used for tracing
 */
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'application'
 apply plugin: 'docker'
 apply plugin: 'eclipse'
-apply plugin: 'spring-cloud-contract'
-apply plugin: 'maven-publish'
 
 buildscript {
 	project.ext {
          springBootVersion = '1.5.3.RELEASE'
-         jarName = 'basic-comments-webservice'
+         jarName = 'basic-zipkin-server'
          versionName = '0.0.1'
          gradleDockerVersion = '1.2'
-         springCloudContractVesrion = '1.1.1.RELEASE'
 	}
     repositories {
         jcenter()
@@ -28,9 +25,7 @@ buildscript {
         // Gradle docker plugin dependency
         classpath "se.transmode.gradle:gradle-docker:${project.gradleDockerVersion}"
         
-        // if using Stub Runner (consumer side) only remove this dependency
-        classpath "org.springframework.cloud:spring-cloud-contract-gradle-plugin:${project.springCloudContractVesrion}"
-    }
+       }
 }
 
 task createWrapper(type: Wrapper) {
@@ -39,7 +34,7 @@ task createWrapper(type: Wrapper) {
 
 // Used by the Docker gradle plugin, group refers to the account under which the docker image is created
 group = 'anilallewar'
-mainClassName = 'com.anilallewar.microservices.comments.CommentsApplication'
+mainClassName = 'com.anilallewar.microservices.tracing.ZipkinTracingApplication'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -60,20 +55,11 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")    
     compile("org.springframework.boot:spring-boot-starter-actuator")
     
-    // Spring OAuth2 security
-    compile("org.springframework.boot:spring-boot-starter-security")
-    compile("org.springframework.security.oauth:spring-security-oauth2")
-    compile("org.springframework.security:spring-security-jwt")
-    
-    // Eureka client
-    compile('org.springframework.cloud:spring-cloud-starter-eureka')
-    
-    // Consumer driven contracts server
-    testCompile('org.springframework.cloud:spring-cloud-starter-contract-verifier')
-	
 	// Zipkin tracing
 	compile('org.springframework.cloud:spring-cloud-starter-zipkin')
-}
+	runtime('io.zipkin.java:zipkin-autoconfigure-ui')
+	compile('io.zipkin.java:zipkin-server')
+}	
 
 jar {
     baseName = "${project.jarName}"
@@ -107,30 +93,4 @@ task buildDocker(type: Docker, dependsOn: build) {
 
 run {
     jvmArgs = ['-Xdebug', '-Xrunjdwp:server=y,transport=dt_socket,address=4300,suspend=n','-Dspring.profiles.active=default']
-}
-
-// Setup the package which contains base classes that the spring cloud contract test case would extend
-contracts {
-	packageWithBaseClasses = 'com.anilallewar.microservices.comments.contracts'
-}
-
-clean.doFirst {
-	delete "~/.m2/repository/anilallewar/basic-comments-webservice"
-	delete "~/.m2/repository/anilallewar/basic-comments-webservice-stubs"
-}
-
-// Setup the artifact id with which the stubs jar would be published, the group id comes from the 'group' attribute defined earlier 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-			artifactId jar.baseName
-			version jar.version
-            from components.java
-        }
-		stubs(MavenPublication) {
-			artifactId "${jar.baseName}-stubs"
-			version jar.version
-			artifact verifierStubsJar
-		}
-    }
 }
