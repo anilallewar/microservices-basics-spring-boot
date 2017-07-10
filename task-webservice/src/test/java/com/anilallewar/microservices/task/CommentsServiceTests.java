@@ -23,10 +23,12 @@ import com.anilallewar.microservices.task.oauth2.security.WithMockOAuth2Token;
  *
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.MOCK, properties = { "spring.cloud.discovery.enabled=false",
-		"spring.cloud.config.enabled=false","stubrunner.idsToServiceIds.basic-comments-webservice-stubs=comments-webservice" })
+@SpringBootTest(classes = { TaskApplication.class }, webEnvironment = WebEnvironment.MOCK, properties = {
+		"spring.cloud.discovery.enabled=false", "spring.cloud.config.enabled=false",
+		"stubrunner.idsToServiceIds.basic-comments-webservice-stubs=comments-webservice",
+		"spring.zipkin.enabled=false" })
 @Import(OAuth2ClientTestConfiguration.class)
-@AutoConfigureStubRunner(ids={"anilallewar:basic-comments-webservice-stubs:+:stubs:9083"}, workOffline=true)
+@AutoConfigureStubRunner(ids = { "anilallewar:basic-comments-webservice-stubs:+:stubs:9083" }, workOffline = true)
 @DirtiesContext
 public class CommentsServiceTests {
 

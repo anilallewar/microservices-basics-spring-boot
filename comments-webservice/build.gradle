@@ -115,8 +115,8 @@ contracts {
 }
 
 clean.doFirst {
-	delete "~/.m2/repository/anilallewar/basic-comments-webservice"
-	delete "~/.m2/repository/anilallewar/basic-comments-webservice-stubs"
+	delete "${System.properties['user.home']}${File.separator}.m2${File.separator}repository${File.separator}anilallewar${File.separator}basic-comments-webservice"
+	delete "${System.properties['user.home']}${File.separator}.m2${File.separator}repository${File.separator}anilallewar${File.separator}basic-comments-webservice-stubs"
 }
 
 // Setup the artifact id with which the stubs jar would be published, the group id comes from the 'group' attribute defined earlier 

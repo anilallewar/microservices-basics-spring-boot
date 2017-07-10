@@ -1,7 +1,5 @@
 spring:
   application:
-  
-# Name of the service that is using with Zuul routes to forward specific requests to this service  
     name: zipkin-tracing
   cloud:
     config:
