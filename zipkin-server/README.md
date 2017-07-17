@@ -1,8 +1,8 @@
 #Overview
 
-This application provides the **Eureka Server** that provides service discovery and enables all Eureka clients to discover each other.
+This application provides the **Zipkin Server** that provides UI for the [Zipkin distributed tracing](http://zipkin.io/).
 
-When a client registers with Eureka, it provides meta-data about itself such as host and port, health indicator URL, home page etc. Eureka receives heartbeat messages from each instance belonging to a service. If the heartbeat fails over a configurable timetable, the instance is normally removed from the registry.
+When we enable tracing on the applications, they send the tracing data (timing, components called etc) to the Zipkin server so that we can visualize it.
 
 ##Pre-requisites
 
@@ -11,7 +11,7 @@ When a client registers with Eureka, it provides meta-data about itself such as 
 
 ### Running the application
 * Build the application by running the `./gradlew clean build` gradle command at the "webservice-registry" project root folder	on the terminal.
-* If you want to run the application as jar file, then run `java -jar build/libs/basic-webservice-registry-0.0.1.jar` command at the terminal.
+* If you want to run the application as jar file, then run `java -jar build/libs/basic-zipkin-server-0.0.1.jar` command at the terminal.
 
 ## External Configuration
 Please refer to [user webservice](/../../blob/master/user-webservice/README.md) for details on how the external configuration works. Note that there is separate configuration file for each Spring application; the application should refer to it's own .yml file for configuration.

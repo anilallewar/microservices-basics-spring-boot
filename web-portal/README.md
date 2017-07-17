@@ -15,7 +15,7 @@ It is perfectly acceptable to have the SPA not start using the Spring boot appli
 
 ### Running the application
 * Build the application by running the `./gradlew clean build` gradle command at the "web-portal" project root folder	on the terminal.
-* If you want to run the application as jar file, then run `java -jar build/libs/sample-web-portal-0.0.1.jar` command at the terminal.
+* If you want to run the application as jar file, then run `java -jar build/libs/basic-web-portal-0.0.1.jar` command at the terminal.
 
 ## External Configuration
 Please refer to [user webservice](/../../blob/master/user-webservice/README.md) for details on how the external configuration works. Note that there is separate configuration file for each Spring application; the application should refer to it's own .yml file for configuration.
