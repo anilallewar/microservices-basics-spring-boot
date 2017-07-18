@@ -29,3 +29,5 @@ taskwebservice:
   scale: 1
 commentswebservice:
   scale: 1
+zipkinserver:
+  scale: 1

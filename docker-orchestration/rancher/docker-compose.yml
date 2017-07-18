@@ -132,3 +132,18 @@ services:
       io.rancher.scheduler.affinity:host_label_soft: name=aa
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       io.rancher.container.pull_image: always
+
+  zipkinserver:
+    image: anilallewar/basic-zipkin-server:0.0.1
+    mem_limit: 1073741824
+    restart: unless-stopped
+    ports:
+      - "9411:9411/tcp"
+    command:
+      - while ! curl -s http://configserver:8888/health > /dev/null; do echo Waiting for Config Service to start; sleep 5; done; /app/run.sh
+    links:
+      - configserver:configserver
+    labels:
+      io.rancher.scheduler.affinity:host_label_soft: name=aa
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.pull_image: always

@@ -38,7 +38,7 @@ services:
       test: ["CMD", "curl", "-f", "http://eurekaregistry:8761"]
       interval: 5s
       timeout: 3s
-      retries: 5
+      retries: 10
     ports:
       - "8761:8761/tcp"
     depends_on:
@@ -103,4 +103,14 @@ services:
       - "8080/tcp"
     depends_on:
       eurekaregistry:
+        condition: service_healthy
+
+  zipkinserver:
+    image: anilallewar/basic-zipkin-server:0.0.1
+    mem_limit: 1073741824
+    restart: unless-stopped
+    ports:
+      - "9411:9411/tcp"
+    depends_on:
+      configserver:
         condition: service_healthy
