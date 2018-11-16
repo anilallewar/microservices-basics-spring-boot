@@ -34,7 +34,7 @@ public class CommentsServiceTests {
 
 	@Autowired
 	private CommentsService commentsService;
-
+	
 	private static final String TEST_TASK_ID = "task11";
 	private static final String REQUEST_TASK_ID = "task12";
 

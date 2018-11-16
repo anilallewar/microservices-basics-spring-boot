@@ -11,7 +11,7 @@ apply plugin: 'maven-publish'
 
 buildscript {
 	project.ext {
-         springBootVersion = '1.5.3.RELEASE'
+         springBootVersion = '1.5.6.RELEASE'
          jarName = 'basic-comments-webservice'
          versionName = '0.0.1'
          gradleDockerVersion = '1.2'
@@ -48,9 +48,13 @@ repositories {
     jcenter()
 }
 
+ext {
+	springCloudVersion = 'Dalston.SR3'
+}
+
 dependencyManagement {
   imports {
-    mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Dalston.RELEASE'
+    mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
   }
 }
 

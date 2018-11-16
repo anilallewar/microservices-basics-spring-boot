@@ -55,28 +55,28 @@ The application consists of 9 different services
 * On the mac command prompt, navigate to the root folder of the application (spring-boot-microservices) and run the `./docker-image-all-projects.sh` command. This should build all the images and publish them to docker.
 * Run the individual images as below
     * Config Server
-        * docker run -d --name config-server -p 8888:8888 anilallewar/config-server
+        * docker run -d --name config-server -p 8888:8888 anilallewar/config-server:0.0.1
         * docker logs -f config-server
     * Eureka Server
-        * docker run -d --name registry-server -p 8761:8761 anilallewar/webservice-registry
+        * docker run -d --name registry-server -p 8761:8761 anilallewar/webservice-registry:0.0.1
         * docker logs -f registry-server
     * OAuth Server
-        * docker run -d --name auth-server -p 8899:8899 anilallewar/auth-server
+        * docker run -d --name auth-server -p 8899:8899 anilallewar/auth-server:0.0.1
         * docker logs -f auth-server
     * User Webservice    
-        * docker run -d --name user-webservice anilallewar/user-webservice
+        * docker run -d --name user-webservice anilallewar/user-webservice:0.0.1
         * docker logs -f user-web service
     * Task Webservice    
-        * docker run -d --name task-webservice anilallewar/task-webservice
+        * docker run -d --name task-webservice anilallewar/task-webservice:0.0.1
         * docker logs -f task-webservice
     * Comments Webservice    
-        * docker run -d --name comments-webservice anilallewar/comments-webservice
+        * docker run -d --name comments-webservice anilallewar/comments-webservice:0.0.1
         * docker logs -f comments-webservice
     * Web Portal    
-        * docker run -d --name web-portal anilallewar/web-portal
+        * docker run -d --name web-portal anilallewar/web-portal:0.0.1
         * docker logs -f web-portal
     * Zuul API Gateway    
-        * docker run -d --name api-gateway -p 8080:8080 anilallewar/api-gateway
+        * docker run -d --name api-gateway -p 8080:8080 anilallewar/api-gateway:0.0.1
         * docker logs -f api-gateway
 * We also have a [docker-compose](https://docs.docker.com/compose/) file under `docker-orchestration/docker-compose` folder that can be used to start all the containers together using `docker-compose up -d` command on the command prompt. The docker-compose file has been updated to start the containers in the correct order. You can similarly stop the containers using `docker-compose down` command on the command prompt.
 * You can also use [Rancher](http://rancher.com/) for orchestrating your containers and managing them. To setup Rancher on your local box and use it to run the containers
@@ -85,6 +85,17 @@ The application consists of 9 different services
    * You can now access Rancher at http://<host public ip>:8080/
    * You can now add hosts to the Rancher setup and then deploy our services using the docker-compose and rancher-compose files available under `docker-orchestration/rancher` folder. For more details on Rancher and how to run the orchestration, please refer to [Rancher documentation](http://rancher.com/docs/rancher/v1.6/en/).
 
+* Access UI
+
+You should be able to access the web ui from http://localhost:8765/.
+
+  * The API gateway would redirect to the OAuth2 login page.
+  * You can use the following credentials for OAuth2 client access.
+      * dave / secret
+      * anil / password
+  * Once you login and provide grant, The UI application provides use of other services.
+
+The Eureka server is accessible on http://localhost:8761/
 
 * Note:
     * If the gradle wrapper doesn't work, then install gradle and run `gradle wrapper --gradle-version 3.5` before using `gradlew`.

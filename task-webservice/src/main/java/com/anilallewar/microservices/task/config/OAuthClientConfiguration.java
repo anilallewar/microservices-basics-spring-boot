@@ -1,42 +1,24 @@
 package com.anilallewar.microservices.task.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
-import org.springframework.cloud.security.oauth2.client.ResourceServerTokenRelayAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
-import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
 
 /**
  * Configuration that sets up the OAuth2 client operation for making calls to
  * the comments-webservice.<br>
  * <br>
  * 
- * We add a {@link HandlerInterceptor} to add the JWT token relayed by the Zuul
- * gateway into the OAuth2RestTemplate. This needs to be added manually to the
- * WebMvc intercepter chain because of an existing bug in Spring boot 1.5.3.
- * 
  * @author anilallewar
  *
  */
 @Configuration
-@ImportAutoConfiguration(classes = { ResourceServerTokenRelayAutoConfiguration.class })
-public class OAuthClientConfiguration extends WebMvcConfigurerAdapter {
-
-	/**
-	 * Issues with JWT token not getting relayed by the resource server
-	 * {@linkplain https://stackoverflow.com/questions/43566515/spring-security-oauth2-jwt-token-relay-issue}
-	 */
-	@Autowired
-	@Qualifier("tokenRelayRequestInterceptor")
-	HandlerInterceptor tokenRelayHandlerInterceptor;
+public class OAuthClientConfiguration {
 
 	/**
 	 * RestTempate that relays the OAuth2 token passed to the task webservice.
@@ -44,15 +26,18 @@ public class OAuthClientConfiguration extends WebMvcConfigurerAdapter {
 	 * @param oauth2ClientContext
 	 * @return
 	 */
-	@Bean
+	@Bean(name = "oAuth2RestTemplate")
 	@LoadBalanced
-	public OAuth2RestTemplate restTemplate(OAuth2ProtectedResourceDetails resource, OAuth2ClientContext context) {
-		return new OAuth2RestTemplate(resource, context);
+	@Primary
+	public OAuth2RestTemplate restTemplate(OAuth2ClientContext context) {
+		return new OAuth2RestTemplate(authServer(), context);
 	}
 
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(this.tokenRelayHandlerInterceptor);
+	private OAuth2ProtectedResourceDetails authServer() {
+		ResourceOwnerPasswordResourceDetails resourceOwnerPasswordResourceDetails = new ResourceOwnerPasswordResourceDetails();
+		// Need to set the access token URI since RestTemplate tries to access it first
+		// time
+		resourceOwnerPasswordResourceDetails.setAccessTokenUri("/userauth/oauth/token");
+		return resourceOwnerPasswordResourceDetails;
 	}
-
 }
