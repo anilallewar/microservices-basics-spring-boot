@@ -236,7 +236,7 @@ You can read in detail about Spring Cloud Netflix here - http://cloud.spring.io/
 
 OAuth2 is an authorization framework that specifies different ways a third-party application can obtain limited access to determined set of resources.
 
-![OAuth2 abstract protocol](images/OAuth2 abstract protocol flow.png)
+![OAuth2 abstract protocol](/images/OAuth2_abstract_protocol_flow.png)
 
 OAuth defines four roles:
 
