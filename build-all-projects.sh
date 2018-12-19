@@ -1,11 +1,11 @@
 #!/bin/sh
 
-cd api-gateway; ./gradlew clean build; cd ..
-cd auth-server; ./gradlew clean build; cd ..
-cd config-server; ./gradlew clean build; cd ..
-cd comments-webservice; ./gradlew clean build publishToMavenLocal; cd ..
-cd task-webservice; ./gradlew clean build; cd ..
-cd user-webservice; ./gradlew clean build; cd ..
-cd web-portal; ./gradlew clean build; cd ..
-cd webservice-registry; ./gradlew clean build; cd ..
-cd zipkin-server; ./gradlew clean build ; cd ..
+cd api-gateway; echo "\033[1;96m Execution directory: `pwd | xargs basename` \033[0m"; ./gradlew clean build; cd ..
+cd auth-server; echo "\033[1;96m Execution directory: `pwd | xargs basename` \033[0m"; ./gradlew clean build; cd ..
+cd config-server; echo "\033[1;96m Execution directory: `pwd | xargs basename` \033[0m"; ./gradlew clean build; cd ..
+cd comments-webservice; echo "\033[1;96m Execution directory: `pwd | xargs basename` \033[0m"; ./gradlew clean build publishToMavenLocal; cd ..
+cd task-webservice; echo "\033[1;96m Execution directory: `pwd | xargs basename` \033[0m"; ./gradlew clean build; cd ..
+cd user-webservice; echo "\033[1;96m Execution directory: `pwd | xargs basename` \033[0m"; ./gradlew clean build; cd ..
+cd web-portal; echo "\033[1;96m Execution directory: `pwd | xargs basename` \033[0m"; ./gradlew clean build; cd ..
+cd webservice-registry; echo "\033[1;96m Execution directory: `pwd | xargs basename` \033[0m"; ./gradlew clean build; cd ..
+cd zipkin-server; echo "\033[1;96m Execution directory: `pwd | xargs basename` \033[0m"; ./gradlew clean build ; cd ..

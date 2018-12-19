@@ -2,7 +2,9 @@ package com.anilallewar.microservices.auth.api;
 
 import java.security.Principal;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,7 +28,7 @@ public class AuthUserController {
 	 * @param user
 	 * @return
 	 */
-	@RequestMapping("/me")
+	@RequestMapping(path = "/me", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public Principal getCurrentLoggedInUser(Principal user) {
 		return user;

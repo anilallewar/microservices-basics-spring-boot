@@ -4,7 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
-import org.springframework.web.bind.annotation.SessionAttributes;
+
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * The Main Spring Boot Application class that starts the authorization
@@ -19,7 +20,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableResourceServer
-@SessionAttributes("authorizationRequest")
+//@SessionAttributes("authorizationRequest")
+@EnableSwagger2
 public class AuthServerApplication {
 
 	public static void main(String[] args) {

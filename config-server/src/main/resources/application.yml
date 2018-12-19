@@ -4,6 +4,9 @@ spring:
       server:
         git:
           uri: https://github.com/anilallewar/microservices-basics-cloud-config
+#         username: <>
+#         password: <>
+
 # While in development mode, you can configure the config server to pick up configuration files from
 # the file system
           

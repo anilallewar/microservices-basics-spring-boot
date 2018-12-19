@@ -13,6 +13,7 @@ buildscript {
          jarName = 'basic-api-gateway'
          versionName = '0.0.1'
          gradleDockerVersion = '1.2'
+         swagger2version = '2.7.0'
 	}
     repositories {
         jcenter()
@@ -78,6 +79,10 @@ dependencies {
 	
 	// Zipkin tracing
 	compile('org.springframework.cloud:spring-cloud-starter-zipkin')
+	
+	  	// Swagger for API testing
+	compile("io.springfox:springfox-swagger2:${swagger2version}")
+	compile("io.springfox:springfox-swagger-ui:${swagger2version}")
 }
 
 jar {

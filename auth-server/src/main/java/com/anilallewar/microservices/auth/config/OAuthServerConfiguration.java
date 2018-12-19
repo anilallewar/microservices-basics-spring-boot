@@ -1,6 +1,8 @@
 package com.anilallewar.microservices.auth.config;
 
 import java.security.KeyPair;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -22,6 +24,21 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
 import com.anilallewar.microservices.auth.service.JdbcUserDetailsService;
+import com.google.common.collect.Lists;
+
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiKey;
+import springfox.documentation.service.AuthorizationScope;
+import springfox.documentation.service.GrantType;
+import springfox.documentation.service.OAuth;
+import springfox.documentation.service.ResourceOwnerPasswordCredentialsGrant;
+import springfox.documentation.service.SecurityReference;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger.web.ApiKeyVehicle;
+import springfox.documentation.swagger.web.SecurityConfiguration;
 
 /**
  * The Class defines the authorization server that would authenticate the user
@@ -34,6 +51,10 @@ import com.anilallewar.microservices.auth.service.JdbcUserDetailsService;
 @Configuration
 @EnableAuthorizationServer
 public class OAuthServerConfiguration extends AuthorizationServerConfigurerAdapter {
+	
+	private static final String AUTHORIZATION_HEADER = "AUTHORIZATION";
+	private static final String OAUTH2_CLIENT_SCOPE = "openid";
+	
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
@@ -56,7 +77,7 @@ public class OAuthServerConfiguration extends AuthorizationServerConfigurerAdapt
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.jdbc(this.dataSource).withClient("acme").secret("acmesecret").authorizedGrantTypes("authorization_code",
-				"client_credentials", "password", "implicit", "refresh_token").scopes("openid");
+				"client_credentials", "password", "implicit", "refresh_token").scopes(OAUTH2_CLIENT_SCOPE);
 	}
 
 	@Override
@@ -105,4 +126,57 @@ public class OAuthServerConfiguration extends AuthorizationServerConfigurerAdapt
 		}
 	}
 
+	/**
+	 * Swagger2 support with OAuth2 security for the API's
+	 * 
+	 * @return
+	 */
+	@Bean
+	public Docket api() {
+		return new Docket(DocumentationType.SWAGGER_2).select()
+				.apis(RequestHandlerSelectors.basePackage("com.anilallewar.microservices.auth")).paths(PathSelectors.any())
+				.build().enable(true).securityContexts(Lists.newArrayList(securityContext()))
+				.securitySchemes(Lists.newArrayList(apiKey(), securitySchema()));
+	}
+
+	private ApiKey apiKey() {
+		return new ApiKey(AUTHORIZATION_HEADER, "api_key", "header");
+	}
+
+	@Bean
+	SecurityConfiguration security() {
+		return new SecurityConfiguration(null, null, null, // realm Needed for authenticate button to work
+				null, // appName Needed for authenticate button to work
+				"BEARER ", // apiKeyValue
+				ApiKeyVehicle.HEADER, AUTHORIZATION_HEADER, // apiKeyName
+				null);
+	}
+
+	private SecurityContext securityContext() {
+		return SecurityContext.builder().securityReferences(defaultAuth()).forPaths(PathSelectors.regex("/anyPath.*"))
+				.build();
+	}
+
+	List<SecurityReference> defaultAuth() {
+		AuthorizationScope authorizationScope = new AuthorizationScope(OAUTH2_CLIENT_SCOPE,
+				"Access for open id  default");
+		AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+		authorizationScopes[0] = authorizationScope;
+		return Lists.newArrayList(new SecurityReference(AUTHORIZATION_HEADER, authorizationScopes));
+	}
+
+	private OAuth securitySchema() {
+		List<AuthorizationScope> authorizationScopeList = new ArrayList<>();
+		authorizationScopeList.add(new AuthorizationScope(OAUTH2_CLIENT_SCOPE, "Access for open id  default"));
+
+		List<GrantType> grantTypes = new ArrayList<>();
+		ResourceOwnerPasswordCredentialsGrant passwordOwnerGrant = new ResourceOwnerPasswordCredentialsGrant(
+				"/userauth/oauth/token");
+
+		grantTypes.add(passwordOwnerGrant);
+
+		OAuth oAuth = new OAuth("oauth", authorizationScopeList, grantTypes);
+
+		return oAuth;
+	}
 }

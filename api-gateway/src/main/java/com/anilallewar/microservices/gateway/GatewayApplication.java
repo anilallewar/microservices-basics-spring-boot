@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
 /**
  * The Main Spring Boot Application class which does the following
  * <ol>
@@ -44,18 +46,22 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableZuulProxy
-@EnableOAuth2Sso
-public class GatewayApplication extends WebSecurityConfigurerAdapter {
+@EnableSwagger2
+public class GatewayApplication/* extends WebSecurityConfigurerAdapter */{
 
 	public static void main(String[] args) {
 		SpringApplication.run(GatewayApplication.class, args);
 	}
 
-	@Override
-	public void configure(HttpSecurity http) throws Exception {
-		// @formatter:off
-		http.logout().and().authorizeRequests().antMatchers("/**/*.html", "/login").permitAll().anyRequest()
-				.authenticated().and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-		// @formatter:on
-	}
+	
+	/**
+	 * Uncomment and make changes to external API gateway configuration if you want to use the web-portal
+	 */
+//	@Override
+//	public void configure(HttpSecurity http) throws Exception {
+//		// @formatter:off
+//		http.logout().and().authorizeRequests().antMatchers("/**/*.html", "/login").permitAll().anyRequest()
+//				.authenticated().and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+//		// @formatter:on
+//	}
 }
