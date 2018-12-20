@@ -123,7 +123,7 @@ Due to the ability to build components separately and running them separately me
 With Microservices, since each component caters to a somewhat complete business functionality, that centralized control by Key Architects and DBAs goes away. Some Components are best built using JEE and RDBMS, for some Real time Data Analytics is the key, they could use Apache Storm and Apache Kafka, for some others R is better fit, for IO Intensive systems may be Node.js and MongoDB works out. Same way User data could now go in NoSQL databases, Transaction data could go in traditional RDBMS, Recommendation systems could use Hive as their Database and so on.
 
 **Decentralized Control**
-![Decentralied Control](/images/Decentralized Goverance.png)
+![Decentralied Control](/images/Decentralized_Goverance.png)
 
 
 **Decentalized Data Management**
@@ -236,7 +236,7 @@ You can read in detail about Spring Cloud Netflix here - http://cloud.spring.io/
 
 OAuth2 is an authorization framework that specifies different ways a third-party application can obtain limited access to determined set of resources.
 
-![OAuth2 abstract protocol](/images/OAuth2 abstract protocol flow.png)
+![OAuth2 abstract protocol](/images/OAuth2_abstract_protocol_flow.png)
 
 OAuth defines four roles:
 
