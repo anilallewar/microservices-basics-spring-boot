@@ -3,7 +3,7 @@
 ## Introduction
 This service acts as the authetication and authorization service for the ecosystem of micro-services that we developed. 
 
-We use a JWT (Json Web Token) to pass the access token wherein the token itself contains enough information for the resource server to do simple user authentication. The "/me" enpoint still needs to be used by the browser to see if the user is authenticated or not; but is not required in intra-service communication.
+We use a JWT (Json Web Token) to pass the access token wherein the token itself contains enough information for the resource server to do simple user authentication. The "/me" endpoint still needs to be used by the browser to see if the user is authenticated or not; but is not required in intra-service communication.
 
 ## Prerequistes
 
