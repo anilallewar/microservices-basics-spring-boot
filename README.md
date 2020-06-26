@@ -35,7 +35,7 @@ The application consists of 9 different services
 * [comments-webservice](comments-webservice/README.md) - Comments for task micro-service
 * [api-gateway](api-gateway/README.md) - API gateway that proxies all the micro-services
 * [web-portal](web-portal/README.md) - Single Page Application that provides the UI
-* [zipkin-server](zipkin-server/README.md) - Single Page Application that provides the UI
+* [zipkin-server](zipkin-server/README.md) - Single Page Application that provides the UI for the Zipkin distributed tracing.
 
 ### Target Architecture
 ![Target Architecture](/images/Target_Architecture.jpg)
