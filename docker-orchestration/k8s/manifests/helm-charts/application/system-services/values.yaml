@@ -8,15 +8,26 @@ mysql:
   tag: latest
   replicaCount: 1
 
+eurekaregistry: 
+  image: anilallewar/basic-webservice-registry
+  tag: 0.0.1
+  replicaCount: 1
+
 image:
   pullPolicy: IfNotPresent
+
+spring:
+  activeProfile: docker
   
 service:
   configserver:
-    type: LoadBalancer
-    externalPort: 8888
+    type: ClusterIP
     internalPort: 8888
   mysql:
     internalPort: 3306
     rootPassword: root
     database: auth
+  eurekaregistry:
+    type: LoadBalancer
+    externalPort: 8761
+    internalPort: 8761

@@ -24,16 +24,10 @@ spec:
           value: {{ .Values.service.mysql.database }}
         - name: MYSQL_ROOT_PASSWORD
           value: {{ .Values.service.mysql.rootPassword }}
-        livenessProbe:
-          exec:
-            command: ["mysqladmin", "ping"]
-          initialDelaySeconds: 30
-          periodSeconds: 10
-          timeoutSeconds: 5
         readinessProbe:
           exec:
-            # Check we can execute queries over TCP (skip-networking is off).
-            command: ["mysql", "-h", "127.0.0.1", "-e", "SELECT 1"]
+            # Check we can ping TCP
+            command: ["mysqladmin", "ping"]
           initialDelaySeconds: 5
           periodSeconds: 2
           timeoutSeconds: 1
@@ -62,4 +56,47 @@ spec:
         - containerPort: {{ .Values.service.configserver.internalPort}}
           name: "http"
         command: ["/bin/bash"]
-        args: ["-c", 'until nslookup {{ .Release.Name }}-mysql; do echo Waiting for mySql database to start; sleep 5; done; /app/run.sh']
+        args: ["-c", 'until nslookup mysql; do echo Waiting for mySql database to start; sleep 5; done; /app/run.sh']
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: {{ .Values.service.configserver.internalPort }}
+          initialDelaySeconds: 10
+          periodSeconds: 3
+          timeoutSeconds: 2
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-eurekaregistry
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-eurekaregistry
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-eurekaregistry
+    spec:
+      containers:
+      - name: {{ .Release.Name }}-eurekaregistry
+        image: {{ .Values.eurekaregistry.image }}:{{ .Values.eurekaregistry.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.service.eurekaregistry.internalPort}}
+          name: "http"
+        env:
+        - name: SPRING_ACTIVE_PROFILE
+          value: {{ .Values.spring.activeProfile }}
+        command: ["/bin/bash"]
+        args: ["-c", 'while ! curl -s http://configserver:8888/health > /dev/null; do echo Waiting for Config Service to start; sleep 5; done; /app/run.sh']
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8888
+          initialDelaySeconds: 10
+          periodSeconds: 3
+          timeoutSeconds: 2

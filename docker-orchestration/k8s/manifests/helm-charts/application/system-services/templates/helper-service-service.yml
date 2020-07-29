@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}-mysql
+  name: mysql
 spec:
   selector:
     app: {{ .Release.Name }}-mysql
@@ -15,13 +15,29 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}-config-server
+  name: configserver
 spec:
   selector:
     app: {{ .Release.Name }}-config-server
   ports:
   - name: http
     protocol: TCP
+    # Not exposing the service to external endpoints
     port: {{ .Values.service.configserver.internalPort }}
-    targetPort: {{ .Values.service.configserver.externalPort }}
   type: {{ .Values.service.configserver.type }}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: eurekaregistry
+spec:
+  selector:
+    app: {{ .Release.Name }}-eurekaregistry
+  ports:
+  - name: http
+    protocol: TCP
+    port: {{ .Values.service.eurekaregistry.internalPort }}
+    targetPort: {{ .Values.service.eurekaregistry.externalPort }}
+  type: {{ .Values.service.eurekaregistry.type }}
