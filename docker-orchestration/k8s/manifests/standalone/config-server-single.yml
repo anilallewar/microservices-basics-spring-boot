@@ -19,6 +19,13 @@ spec:
         ports:
         - containerPort: 8888
           name: "config-port"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8888
+          initialDelaySeconds: 10
+          periodSeconds: 3
+          timeoutSeconds: 2
 ---
 apiVersion: v1
 kind: Service

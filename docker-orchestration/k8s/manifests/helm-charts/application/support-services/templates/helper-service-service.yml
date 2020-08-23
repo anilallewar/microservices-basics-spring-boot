@@ -1,0 +1,91 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysqldb
+spec:
+  selector:
+    app: {{ .Release.Name }}-mysql
+  ports:
+  - name: http
+    protocol: TCP
+    port: {{ .Values.service.mysql.internalPort }}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: configserver
+spec:
+  selector:
+    app: {{ .Release.Name }}-config-server
+  ports:
+  - name: http
+    protocol: TCP
+    # Not exposing the service to external endpoints
+    port: {{ .Values.service.configserver.internalPort }}
+  type: {{ .Values.service.configserver.type }}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: eurekaregistry
+spec:
+  selector:
+    app: {{ .Release.Name }}-eurekaregistry
+  ports:
+  - name: http
+    protocol: TCP
+    port: {{ .Values.service.eurekaregistry.internalPort }}
+    targetPort: {{ .Values.service.eurekaregistry.externalPort }}
+  type: {{ .Values.service.eurekaregistry.type }}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: zipkinserver
+spec:
+  selector:
+    app: {{ .Release.Name }}-zipkin-server
+  ports:
+  - name: http
+    protocol: TCP
+    port: {{ .Values.service.zipkinserver.internalPort }}
+    targetPort: {{ .Values.service.zipkinserver.externalPort }}
+  type: {{ .Values.service.zipkinserver.type }}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: authserver
+spec:
+  selector:
+    app: {{ .Release.Name }}-auth-server
+  ports:
+  - name: http
+    protocol: TCP
+    port: {{ .Values.service.authserver.internalPort }}
+  type: {{ .Values.service.authserver.type }}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: apigateway
+spec:
+  selector:
+    app: {{ .Release.Name }}-api-gateway
+  ports:
+  - name: http
+    protocol: TCP
+    port: {{ .Values.service.apigateway.internalPort }}
+  type: {{ .Values.service.apigateway.type }}
+
+

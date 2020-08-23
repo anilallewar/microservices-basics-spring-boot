@@ -1,0 +1,102 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-user-service
+spec:
+  replicas: {{ .Values.userservice.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-user-service
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-user-service
+    spec:
+      containers:
+      - name: {{ .Release.Name }}-user-service
+        image: {{ .Values.userservice.image }}:{{ .Values.userservice.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.service.userservice.internalPort}}
+          name: "http"
+        command: ["/bin/bash"]
+        args: ["-c", 'while ! curl -s http://eurekaregistry:8761/health > /dev/null; do echo Waiting for Eureka Registry Service to start; sleep 5; done; /app/run.sh']
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: {{ .Values.service.userservice.internalPort }}
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 5
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-task-service
+spec:
+  replicas: {{ .Values.taskservice.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-task-service
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-task-service
+    spec:
+      containers:
+      - name: {{ .Release.Name }}-task-service
+        image: {{ .Values.taskservice.image }}:{{ .Values.taskservice.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.service.taskservice.internalPort}}
+          name: "http"
+        env:
+        - name: SPRING_ACTIVE_PROFILE
+          value: {{ .Values.spring.activeProfile }}
+        command: ["/bin/bash"]
+        args: ["-c", 'while ! curl -s http://eurekaregistry:8761/health > /dev/null; do echo Waiting for Eureka Registry Service to start; sleep 5; done; /app/run.sh']
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: {{ .Values.service.taskservice.internalPort}}
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 2
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-comment-service
+spec:
+  replicas: {{ .Values.commentservice.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-comment-service
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-comment-service
+    spec:
+      containers:
+      - name: {{ .Release.Name }}-comment-service
+        image: {{ .Values.commentservice.image }}:{{ .Values.commentservice.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.service.commentservice.internalPort}}
+          name: "http"
+        env:
+        - name: SPRING_ACTIVE_PROFILE
+          value: {{ .Values.spring.activeProfile }}
+        command: ["/bin/bash"]
+        args: ["-c", 'while ! curl -s http://eurekaregistry:8761/health > /dev/null; do echo Waiting for Eureka Registry Service to start; sleep 5; done; /app/run.sh']
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: {{ .Values.service.commentservice.internalPort}}
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 2

@@ -100,7 +100,7 @@ spec:
         livenessProbe:
           httpGet:
             path: /health
-            port: 8888
+            port: {{ .Values.service.eurekaregistry.internalPort }}
           initialDelaySeconds: 10
           periodSeconds: 3
           timeoutSeconds: 2

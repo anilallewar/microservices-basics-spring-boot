@@ -1,0 +1,31 @@
+userservice: 
+  image: anilallewar/basic-user-webservice
+  tag: 0.0.1
+  replicaCount: 2
+
+taskservice: 
+  image: anilallewar/basic-task-webservice
+  tag: 0.0.1
+  replicaCount: 1
+
+commentservice: 
+  image: anilallewar/basic-comments-webservice
+  tag: 0.0.1
+  replicaCount: 1
+  
+service:
+  userservice:
+    type: ClusterIP
+    internalPort: 8080
+  taskservice:
+    # default type is ClusterIP
+    internalPort: 8080
+  commentservice:
+    type: ClusterIP
+    internalPort: 8080
+
+image:
+  pullPolicy: IfNotPresent
+
+spring:
+  activeProfile: docker
