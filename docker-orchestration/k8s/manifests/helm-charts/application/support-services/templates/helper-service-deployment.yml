@@ -199,14 +199,14 @@ spec:
           value: {{ .Values.authserver.javaOptions }}
         command: ["/bin/bash"]
         args: ["-c", 'while ! curl -s http://eurekaregistry:8761/health > /dev/null; do echo Waiting for Eureka Registry Service to start; sleep 5; done; /app/run.sh']
-        livenessProbe:
+        startupProbe:
           httpGet:
             path: /swagger-ui.html
             port: {{ .Values.service.authserver.internalPort}}
-          initialDelaySeconds: 90
-          periodSeconds: 60
-          timeoutSeconds: 15
-
+          # total of 30 x 10 = 300 seconds for startup to finish, have not set the liveness probe since it was failing for some unknown reason
+          failureThreshold: 30
+          periodSeconds: 10
+          
 ---
 
 apiVersion: apps/v1

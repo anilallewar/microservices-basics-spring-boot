@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}-user-service
 spec:
-  replicas: {{ .Values.userservice.replicaCount }}
   selector:
     matchLabels:
       app: {{ .Release.Name }}-user-service

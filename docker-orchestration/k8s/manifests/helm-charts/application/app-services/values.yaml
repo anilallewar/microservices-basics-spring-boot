@@ -1,7 +1,8 @@
 userservice: 
   image: anilallewar/basic-user-webservice
   tag: 0.0.1
-  replicaCount: 2
+  replicaCount: 1
+  maxReplicaCount: 2
   javaOptions: -Xms256M -Xmx512M
   containerMemoryRequest: 256Mi
   containerMemoryLimit: 512Mi

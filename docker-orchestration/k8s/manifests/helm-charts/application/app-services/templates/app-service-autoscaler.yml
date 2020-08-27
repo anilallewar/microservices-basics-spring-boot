@@ -1,0 +1,18 @@
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler 
+metadata: 
+  name: user-service-autoscaler 
+spec: 
+  maxReplicas: {{ .Values.userservice.maxReplicaCount }}
+  minReplicas: {{ .Values.userservice.replicaCount }} 
+  scaleTargetRef: 
+    apiVersion: app/v1 
+    kind: Deployment 
+    name: {{ .Release.Name }}-user-service 
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
