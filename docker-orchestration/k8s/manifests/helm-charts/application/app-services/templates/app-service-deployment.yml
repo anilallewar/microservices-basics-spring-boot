@@ -79,7 +79,7 @@ spec:
             port: {{ .Values.service.taskservice.internalPort}}
           initialDelaySeconds: 120
           periodSeconds: 10
-          timeoutSeconds: 2
+          timeoutSeconds: 5
 
 ---
 
@@ -122,4 +122,4 @@ spec:
             port: {{ .Values.service.commentservice.internalPort}}
           initialDelaySeconds: 120
           periodSeconds: 10
-          timeoutSeconds: 2
+          timeoutSeconds: 5
