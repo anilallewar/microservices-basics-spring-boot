@@ -22,6 +22,10 @@ It also builds on distributed system concepts and tries to provide solutions for
 ## <a name="contributors"></a>Contributors
 
 * [Anil Allewar](https://www.linkedin.com/pub/anil-allewar/18/378/393)
+* [Steve Wall](https://github.com/stevewallone)
+* [Akindele Akinyemi](https://github.com/akinmail)
+* [Manmeet singh](https://github.com/1singhmanmeet)
+* [Ramazan Sakin](https://github.com/ramazansakin)
 
 ## <a name="application-architecture"></a>Application Architecture
 
@@ -79,7 +83,7 @@ The application consists of 9 different services
         * docker run -d --name api-gateway -p 8080:8080 anilallewar/api-gateway:0.0.1
         * docker logs -f api-gateway
 * We also have a [docker-compose](https://docs.docker.com/compose/) file under `docker-orchestration/docker-compose` folder that can be used to start all the containers together using `docker-compose up -d` command on the command prompt. The docker-compose file has been updated to start the containers in the correct order. You can similarly stop the containers using `docker-compose down` command on the command prompt.
-* You can also use [Rancher](http://rancher.com/) for orchestrating your containers and managing them. To setup Rancher on your local box and use it to run the containers
+* You can also use [Rancher](http://rancher.com/) for orchestrating your containers and managing them. To set up Rancher on your local box and use it to run the containers.
    * We would run rancher for test using non-persistent storage. In production, you would typically run rancher using external mysql database and in High Availability (HA) configuration.
    * Run the `sudo docker run -d --restart=unless-stopped -p 8080:8080 rancher/server:stable` command on the command prompt to start the latest stable rancher server.
    * You can now access Rancher at http://<host public ip>:8080/
@@ -93,13 +97,13 @@ You should be able to access the web ui from http://localhost:8765/.
   * You can use the following credentials for OAuth2 client access.
       * dave / secret
       * anil / password
-  * Once you login and provide grant, The UI application provides use of other services.
+  * Once you log in and provide grant, The UI application provides use of other services.
 
 The Eureka server is accessible on http://localhost:8761/
 
 * Note:
     * If the gradle wrapper doesn't work, then install gradle and run `gradle wrapper --gradle-version 3.5` before using `gradlew`.
-    * If you need to setup the classpath correctly, then run `./gradlew clean build eclipse` which would setup the `.classpath` accordingly.
+    * If you need to set up the classpath correctly, then run `./gradlew clean build eclipse` which would setup the `.classpath` accordingly.
 
 ## <a name="microservices-overview"></a>Microservices Overview
 
@@ -129,7 +133,7 @@ With Microservices, since each component caters to a somewhat complete business 
 **Decentalized Data Management**
 ![Decentralied Control](http://martinfowler.com/articles/microservices/images/decentralised-data.png)
 
-Disclaimer - While microservices is much talked about these days, make a note Microservices is not a Free lunch. There is an effort and complexity involved to building and running them, but once you do so, the benefits are plentiful.
+Disclaimer - While Microservices is much talked about these days, make a note Microservices is not a Free lunch. There is an effort and complexity involved to building and running them, but once you do so, the benefits are plentiful.
 
 You can read more about Microservices here - http://martinfowler.com/articles/microservices.html#CharacteristicsOfAMicroserviceArchitecture
 
@@ -141,7 +145,7 @@ Image References from - http://martinfowler.com/articles/microservices.html
 
 Netflix is one of the pioneers behind the Microservices Architecture. Not only have they successfully run Microservices in production, but they have outsourced their battle hardened framework under Netflix Open Source Software Center initiative - http://netflix.github.io/#repo
 
-You will find implementation of numerous of Netflix's Microservices platform pieces here. Here are few for your reference
+You will find implementation of numerous of Netflix's Microservices platform pieces here. Here are few for your reference :
 ### <img src="http://netflix.github.io/assets/repos/eureka.png" width="30px"> Eureka
 Microservices is somewhat like SOA platform, that there are numerous services. Each Service when it comes online registers itself with Service Registry. When some other service wants to communicate with a already registered service, they would ask the Eureka Server the base url for that service. Multiple instances of the same service could register with Eureka, in that case Eureka could help in doing Load Balancing.
 
@@ -157,13 +161,13 @@ A Microservice environment needs a gateway. A Gateway is the only entity exposed
 *
 
 ### <img src="http://netflix.github.io/assets/repos/ribbon.png" width="30px"> Ribbon
-Ribbon is a Load Balancing Client and is meant to work with Eureka Server. Ribbon talks to Eureka server and relies on it to get base url to one of the instances of microservice in question.
+Ribbon is a Load Balancing Client and is meant to work with Eureka Server. Ribbon talks to Eureka server and relies on it to get base url to one of the instances of microservices in question.
 
 ## <a name="spring-boot-overview"></a>Spring Boot Overview
 
 Folks who are familiar with Spring frameworks like Spring MVC, know spring is all about Dependency Injection and Configuration Management. While Spring is an excellent framework, it still takes quite some effort to make a Spring MVC project ready for production.
 
-Spring Boot is Spring's approach towards Convention over Configuration. Spring Boot comes with numerous Start Projects, each starter projects provides a set of conventions which ensures you have a opinionated production ready app.
+Spring Boot is Spring's approach towards Convention over Configuration. Spring Boot comes with numerous Start Projects, each starter projects provides a set of conventions which ensures you have an opinionated production ready app.
 
 To begin with Spring Boot allows you to write web services with just One or two classes. See the example below
 
@@ -216,7 +220,7 @@ You can read in detail about Spring Boot here - https://spring.io/guides/gs/spri
 
 ## <a name="spring-cloud-overview"></a>Spring Cloud Overview
 
-Spring Cloud provides tools for developers to quickly build some of the common patterns in distributed systems (e.g. configuration management, service discovery, circuit breakers, intelligent routing, micro-proxy, control bus, one-time tokens, global locks, leadership election, distributed sessions, cluster state)
+Spring Cloud provides tools for developers to quickly build some common patterns in distributed systems (e.g. configuration management, service discovery, circuit breakers, intelligent routing, micro-proxy, control bus, one-time tokens, global locks, leadership election, distributed sessions, cluster state)
 
 You can read in detail about Spring Cloud here - http://projects.spring.io/spring-cloud/
 
@@ -228,7 +232,7 @@ You can read in detail about Spring Cloud config here - http://cloud.spring.io/s
 
 ## <a name="spring-cloud-netflix-overview"></a>Spring Cloud Netflix Overview
 
-Spring Cloud Netflix provides Netflix OSS integrations for Spring Boot apps through autoconfiguration and binding to the Spring Environment and other Spring programming model idioms.
+Spring Cloud Netflix provides Netflix OSS integrations for Spring Boot apps through auto configuration and binding to the Spring Environment and other Spring programming model idioms.
 
 You can read in detail about Spring Cloud Netflix here - http://cloud.spring.io/spring-cloud-netflix/
 
@@ -240,20 +244,20 @@ OAuth2 is an authorization framework that specifies different ways a third-party
 
 OAuth defines four roles:
 
-   **resource owner:**
+   **Resource owner:**
       An entity capable of granting access to a protected resource. When the resource owner is a person, it is referred to as an end-user.
 
-   **resource server:**
+   **Resource server:**
       The server hosting the protected resources, capable of accepting and responding to protected resource requests using access tokens.
 
-   **client:**
+   **Client:**
       An application making protected resource requests on behalf of the resource owner and with its authorization.  The term "client" does not imply any particular implementation characteristics (e.g., whether the application executes on a server, a desktop, or other devices).
 
-   **authorizationserver:**
+   **Authorization-Server:**
       The server issuing access tokens to the client after successfully authenticating the resource owner and obtaining authorization.
 
 To get more details of how differnt authorizations work in OAuth2, please refer to the readme at **[auth-server](auth-server/README.md)**
 
 ## <a name="spring-oauth-2.0-overview"></a>Spring OAuth2 Overview
 
-Spring provides nice integration between Spring security and OAuth2 providers including the ability to setup your own authorization server. Please see [Spring security with OAuth2](http://projects.spring.io/spring-security-oauth/docs/oauth2.html) for more details.
+Spring provides nice integration between Spring security and OAuth2 providers including the ability to set up your own authorization server. Please see [Spring security with OAuth2](http://projects.spring.io/spring-security-oauth/docs/oauth2.html) for more details.
