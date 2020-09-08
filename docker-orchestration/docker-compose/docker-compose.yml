@@ -3,7 +3,7 @@ services:
   mysqldb:
     image: mysql:latest
     mem_limit: 1073741824
-    restart: unless-stopped
+    restart: always
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-hmysqldb", "-uroot", "-ppassword", "--silent"]
       interval: 5s
