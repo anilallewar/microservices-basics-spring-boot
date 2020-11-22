@@ -20,7 +20,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableResourceServer
-//@SessionAttributes("authorizationRequest")
+//@SessionAttribuWtes("authorizationRequest")
 @EnableSwagger2
 public class AuthServerApplication {
 

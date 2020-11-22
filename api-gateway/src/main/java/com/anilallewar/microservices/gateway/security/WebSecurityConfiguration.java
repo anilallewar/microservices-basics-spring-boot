@@ -1,6 +1,6 @@
 package com.anilallewar.microservices.gateway.security;
 
-import org.springframework.boot.actuate.autoconfigure.ManagementServerProperties;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +17,7 @@ import com.google.common.collect.ImmutableList;
 
 @Configuration
 @EnableWebSecurity
-@Order(ManagementServerProperties.ACCESS_OVERRIDE_ORDER)
+@Order(SecurityProperties.BASIC_AUTH_ORDER)
 @EnableOAuth2Sso
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -26,19 +26,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 		// @formatter:off
 		http
-			// configure CORS -- uses a Bean by the name of corsConfigurationSource (see method below)
-        		// CORS must be configured prior to Spring Security
-			.cors()
-			.and()
-				.sessionManagement()
-					.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			.and()
-				.authorizeRequests()
-					.antMatchers("/**")
-						.permitAll()
-			.and()
-				.csrf()
-					.disable();
+				// configure CORS -- uses a Bean by the name of corsConfigurationSource (see
+				// method below)
+				// CORS must be configured prior to Spring Security
+				.cors().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+				.authorizeRequests().antMatchers("/**").permitAll().and().csrf().disable();
 		// @formatter:on
 	}
 

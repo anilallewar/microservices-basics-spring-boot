@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>auth-server</name>
+	<name>basic-auth-server</name>
 	<comment></comment>
 	<projects/>
 	<natures>
-		<nature>org.springsource.ide.eclipse.gradle.core.nature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
 	<buildSpec>

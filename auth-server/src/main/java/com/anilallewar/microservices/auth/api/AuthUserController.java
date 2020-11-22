@@ -28,7 +28,7 @@ public class AuthUserController {
 	 * @param user
 	 * @return
 	 */
-	@RequestMapping(path = "/me", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(path = "/me", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Principal getCurrentLoggedInUser(Principal user) {
 		return user;

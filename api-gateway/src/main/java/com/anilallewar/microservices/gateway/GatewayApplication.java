@@ -5,10 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -47,15 +44,15 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableEurekaClient
 @EnableZuulProxy
 @EnableSwagger2
-public class GatewayApplication/* extends WebSecurityConfigurerAdapter */{
+public class GatewayApplication/* extends WebSecurityConfigurerAdapter */ {
 
 	public static void main(String[] args) {
 		SpringApplication.run(GatewayApplication.class, args);
 	}
 
-	
 	/**
-	 * Uncomment and make changes to external API gateway configuration if you want to use the web-portal
+	 * Uncomment and make changes to external API gateway configuration if you want
+	 * to use the web-portal
 	 */
 //	@Override
 //	public void configure(HttpSecurity http) throws Exception {

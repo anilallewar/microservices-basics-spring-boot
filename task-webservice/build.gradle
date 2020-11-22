@@ -1,38 +1,40 @@
 /*
 * Build file for Task-webservice
 */
-apply plugin: 'java'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'application'
-apply plugin: 'docker'
-apply plugin: 'eclipse'
-
 buildscript {
 	project.ext {
-         springBootVersion = '1.5.6.RELEASE'
-         jarName = 'basic-task-webservice'
+		// Name has to be same as the rootProject name set in "settings.gradle"
+         projectName = 'basic-task-webservice'
          versionName = '0.0.1'
-         gradleDockerVersion = '1.2'
+         dockerUserName = 'anilallewar'
+         springBootVersion = '2.3.6.RELEASE'
+         springGradlePlugInVersion = '1.0.10.RELEASE'
          swagger2version = '2.7.0'
-	}
-    repositories {
-        jcenter()
-        mavenCentral()
-    }
-    
-    dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:${project.springBootVersion}"
-        classpath "se.transmode.gradle:gradle-docker:${project.gradleDockerVersion}"
-    }
+  	}
+	dependencies {
+    	classpath "io.spring.gradle:dependency-management-plugin:${project.springGradlePlugInVersion}"
+    	classpath "org.springframework.boot:spring-boot-gradle-plugin:${project.springBootVersion}"
+  	}	
+       
+}
+
+plugins {
+	id 'application'
+	id 'eclipse'
+	id 'org.springframework.boot' version '2.3.6.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+ 	id 'com.palantir.docker' version '0.22.2'
 }
 
 task createWrapper(type: Wrapper) {
-    gradleVersion = '3.5'
+    gradleVersion = '6.7'
 }
 
-// Used by the Docker gradle plugin, group refers to the account under which the docker image is created
-group = 'anilallewar'
-mainClassName = 'com.anilallewar.microservices.task.TaskApplication'
+application {
+    mainClass = 'com.anilallewar.microservices.task.TaskApplication'
+}
+
+version = "${project.versionName}"
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -41,8 +43,9 @@ repositories {
     jcenter()
 }
 
+// Spring cloud setup
 ext {
-	springCloudVersion = 'Dalston.SR3'
+  set('springCloudVersion', "Hoxton.SR8")
 }
 
 dependencyManagement {
@@ -51,64 +54,53 @@ dependencyManagement {
   }
 }
 
-
 dependencies {
     // Basic Spring boot with config client
-    compile('org.springframework.cloud:spring-cloud-starter-config')
-    compile("org.springframework.boot:spring-boot-starter-web")    
-    compile("org.springframework.boot:spring-boot-starter-actuator")
-    compile("org.springframework.cloud:spring-cloud-starter-hystrix")
+    implementation('org.springframework.cloud:spring-cloud-starter-config')
+    implementation("org.springframework.boot:spring-boot-starter-web")    
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.cloud:spring-cloud-starter-netflix-hystrix")
     
     // Spring OAuth2 security
-    compile("org.springframework.boot:spring-boot-starter-security")
-    compile("org.springframework.security.oauth:spring-security-oauth2")
-    compile("org.springframework.security:spring-security-jwt")
-	compile('org.springframework.cloud:spring-cloud-security')
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure")
     
     // Eureka client
-    compile('org.springframework.cloud:spring-cloud-starter-eureka')
+    implementation('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
 	
 	// Spring cloud contract client and OAuth2 security tests
-	testCompile("org.springframework.security:spring-security-test")
-	testCompile("org.springframework.boot:spring-boot-starter-test")
-	testCompile("org.springframework.cloud:spring-cloud-starter-contract-stub-runner")
+	testImplementation("org.springframework.security:spring-security-test")
+	testImplementation('org.springframework.boot:spring-boot-starter-test')
+	testImplementation("org.springframework.cloud:spring-cloud-starter-contract-stub-runner")
 	
 	// Zipkin tracing
-	compile('org.springframework.cloud:spring-cloud-starter-zipkin')
+	implementation('org.springframework.cloud:spring-cloud-starter-zipkin')
+	implementation('org.springframework.cloud:spring-cloud-starter-sleuth')
 	
 	// Swagger for API testing
-	compile("io.springfox:springfox-swagger2:${swagger2version}")
-	compile("io.springfox:springfox-swagger-ui:${swagger2version}")
+	implementation("io.springfox:springfox-swagger2:${swagger2version}")
+	implementation("io.springfox:springfox-swagger-ui:${swagger2version}")
 }
 
-jar {
-    baseName = "${project.jarName}"
-    version =  "${project.versionName}"
+test {
+	useJUnitPlatform()
 }
 
 /*
 * This task builds the docker image by copying the output of the "jar" gradle command
-* and moving it to the "build/docker" directory which is used as the staging directory 
-* by the docker gradle plugin. We then build the docker image by invoking the appropriate
-* Dockerfile.  
+* and moving it to the temporary directory which is used as the staging directory 
+* by the Palantir docker gradle plugin. 
 */
-task buildDocker(type: Docker, dependsOn: build) {
-  push = false
-  applicationName = jar.baseName
-  tagVersion = jar.version
-  dockerfile = file('src/main/docker/Dockerfile')
-  doFirst {
-    // Copy the built fat jar to the Docker plugin staging directory
-    copy {
-      from jar
-      into stageDir
-    }
-    // Copy the run.sh file to the Docker plugin staging directory
-    copy {
-      from "${project.buildDir}/resources/main/run.sh"
-      into stageDir
-    }
-  }
+docker {
+	 // Name and tag of the Docker image to reflect the project artifacts
+     name "${project.dockerUserName}/${project.projectName}:${project.versionName}"
+     
+     // Pick up Dockerfile from specific location
+     dockerfile file('src/main/docker/Dockerfile')
+     
+     // Copy the run.sh and the output project jar file to the Docker context utilized by the Palantir plugin
+     files "${project.buildDir}/resources/main/run.sh", tasks.jar.outputs
+     
 }
 
 run {

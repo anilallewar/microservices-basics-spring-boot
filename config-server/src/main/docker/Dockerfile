@@ -5,7 +5,7 @@ FROM openjdk:8u121-jdk-alpine
 
 MAINTAINER Anil Allewar <anilallewar@yahoo.co.in>
 
-# Keep consistent with build.gradle 
+# Keep consistent with build.gradle & settings.gradle
 ENV APP_JAR_NAME basic-config-server
 ENV APP_JAR_VERSION 0.0.1
 
