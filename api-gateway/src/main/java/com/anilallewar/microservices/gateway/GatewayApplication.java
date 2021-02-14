@@ -7,8 +7,6 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
 /**
  * The Main Spring Boot Application class which does the following
  * <ol>
@@ -43,7 +41,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableZuulProxy
-@EnableSwagger2
 public class GatewayApplication/* extends WebSecurityConfigurerAdapter */ {
 
 	public static void main(String[] args) {

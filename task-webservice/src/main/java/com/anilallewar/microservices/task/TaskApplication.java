@@ -7,8 +7,6 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 
-import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
-
 /**
  * The boot application class that defines the spring boot application to have
  * the following properties<br>
@@ -40,7 +38,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 @EnableCircuitBreaker
 @EnableResourceServer
 @EnableOAuth2Client
-@EnableSwagger2WebMvc
 public class TaskApplication {
 	public static void main(String[] args) {
 

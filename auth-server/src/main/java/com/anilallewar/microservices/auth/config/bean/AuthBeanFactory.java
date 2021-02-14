@@ -20,8 +20,8 @@ import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger.web.ApiKeyVehicle;
 import springfox.documentation.swagger.web.SecurityConfiguration;
+import springfox.documentation.swagger.web.SecurityConfigurationBuilder;
 
 @Configuration
 public class AuthBeanFactory {
@@ -35,10 +35,17 @@ public class AuthBeanFactory {
 	 */
 	@Bean
 	public Docket api() {
-		return new Docket(DocumentationType.SWAGGER_2).select()
+
+		// @formatter:off
+		return new Docket(DocumentationType.SWAGGER_2)
+				.select()
 				.apis(RequestHandlerSelectors.basePackage("com.anilallewar.microservices.auth"))
-				.paths(PathSelectors.any()).build().enable(true).securityContexts(Lists.newArrayList(securityContext()))
+				.paths(PathSelectors.any())
+				.build()
+				.enable(true)
+				.securityContexts(Lists.newArrayList(securityContext()))
 				.securitySchemes(Lists.newArrayList(apiKey(), securitySchema()));
+		// @formatter:on
 	}
 
 	private ApiKey apiKey() {
@@ -48,19 +55,26 @@ public class AuthBeanFactory {
 	@Bean
 	SecurityConfiguration security() {
 
-		return new SecurityConfiguration(null, null, null, // realm Needed for authenticate button to work
-				null, // appName Needed for authenticate button to work
-				"BEARER ", // apiKeyValue
-				ApiKeyVehicle.HEADER, AUTHORIZATION_HEADER, // apiKeyName
-				null);
+		return SecurityConfigurationBuilder.builder().clientId(OAuthServerConfiguration.OAUTH2_CLIENT_ID)
+				.clientSecret(OAuthServerConfiguration.OAUTH2_CLIENT_PASSWORD).realm("test-app-realm")
+				.appName("test-app").scopeSeparator(",").additionalQueryStringParams(null)
+				.useBasicAuthenticationWithAccessCodeGrant(false).enableCsrfSupport(false).build();
 
-//		return SecurityConfigurationBuilder.builder().clientId(OAuthServerConfiguration.OAUTH2_CLIENT_ID)
-//				.clientSecret(OAuthServerConfiguration.OAUTH2_CLIENT_PASSWORD).enableCsrfSupport(true).build();
+//		return new SecurityConfiguration(null, null, null, // realm Needed for authenticate button to work
+//				null, // appName Needed for authenticate button to work
+//				"BEARER ", // apiKeyValue
+//				ApiKeyVehicle.HEADER, AUTHORIZATION_HEADER, // apiKeyName
+//				null);
+
 	}
 
 	private SecurityContext securityContext() {
-		return SecurityContext.builder().securityReferences(defaultAuth()).forPaths(PathSelectors.regex("/anyPath.*"))
+		// @formatter:off
+		return SecurityContext.builder()
+					.securityReferences(defaultAuth())
+					.forPaths(PathSelectors.regex("/anyPath.*"))
 				.build();
+		// @formatter:on
 	}
 
 	List<SecurityReference> defaultAuth() {

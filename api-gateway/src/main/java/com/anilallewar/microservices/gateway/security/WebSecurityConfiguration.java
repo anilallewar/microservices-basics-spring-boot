@@ -29,8 +29,15 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 				// configure CORS -- uses a Bean by the name of corsConfigurationSource (see
 				// method below)
 				// CORS must be configured prior to Spring Security
-				.cors().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-				.authorizeRequests().antMatchers("/**").permitAll().and().csrf().disable();
+				.cors()
+				.and()
+				.sessionManagement()
+					.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.and()
+				.authorizeRequests()
+					.antMatchers("/**").permitAll()
+				.and()
+				.csrf().disable();
 		// @formatter:on
 	}
 

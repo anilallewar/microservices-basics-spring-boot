@@ -4,6 +4,8 @@ spring:
       server:
         git:
           uri: https://github.com/anilallewar/microservices-basics-cloud-config
+# branch-name on the config repo to use, use "master for" production deployments
+          default-label: develop
 #         username: <>
 #         password: <>
 

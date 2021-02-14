@@ -9,7 +9,7 @@ buildscript {
          dockerUserName = 'anilallewar'
          springBootVersion = '2.3.6.RELEASE'
          springGradlePlugInVersion = '1.0.10.RELEASE'
-         swagger2version = '2.7.0'
+         swaggerSpringBootversion = '3.0.0'
   	}
 	dependencies {
     	classpath "io.spring.gradle:dependency-management-plugin:${project.springGradlePlugInVersion}"
@@ -78,8 +78,7 @@ dependencies {
 	implementation('org.springframework.cloud:spring-cloud-starter-sleuth')
 	
 	// Swagger for API testing
-	implementation("io.springfox:springfox-swagger2:${swagger2version}")
-	implementation("io.springfox:springfox-swagger-ui:${swagger2version}")
+	implementation("io.springfox:springfox-boot-starter:${swaggerSpringBootversion}")
 }
 
 test {
