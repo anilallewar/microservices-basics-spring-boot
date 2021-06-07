@@ -2,4 +2,5 @@
 /bin/
 /.gradle/
 .classpath
+/.idea/
 .DS_Store

@@ -7,7 +7,7 @@ The Zuul api gateway solves a very common use case where a UI application wants 
 It also knows how to invoke the authorization server in case the user is not authenticated. Once the authentication is complete, it relays the OAuth2 token to the respective services so that they can find the authenticated user and provide services.
 
 ##Pre-requisites
-
+* Have a working knowledge on Java and Spring Boot.
 ### Projects that need to be started before
 * [config server](/../../blob/master/config-server/README.md) - For pulling the configuration information
 * [webserver-registry](/../../blob/master/webservice-registry/README.md) - For starting the Eureka server since the authorization server also is a micro-service that needs to be registered with Eureka server.    
