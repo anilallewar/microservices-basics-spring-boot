@@ -260,4 +260,4 @@ To get more details of how differnt authorizations work in OAuth2, please refer 
 
 ## <a name="spring-oauth-2.0-overview"></a>Spring OAuth2 Overview
 
-Spring provides nice integration between Spring security and OAuth2 providers including the ability to set up your own authorization server. Please see [Spring security with OAuth2](http://projects.spring.io/spring-security-oauth/docs/oauth2.html) for more details.
+Spring provides nice integration between Spring security and OAuth2 providers including the ability to set up your own authorization server. Please see [Spring security](https://spring.io/projects/spring-security) for more details.
